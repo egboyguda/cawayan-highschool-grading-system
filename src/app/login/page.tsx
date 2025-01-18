@@ -1,34 +1,16 @@
 'use client'
 
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
 import { Alert, AlertDescription } from "@/components/ui/alert"
+import { useActionState } from "react"
+import { loginAction } from "@/action/login"
 
 export default function LoginPage() {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [error, setError] = useState('')
-  const router = useRouter()
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    setError('')
-
-    // Basic validation
-    if (!email || !password) {
-      setError('Please enter both email and password.')
-      return
-    }
-
-    // Here you would typically handle the login logic
-    // For now, we'll just simulate a successful login
-    console.log('Login attempted with:', { email, password })
-    router.push('/') // Redirect to dashboard on success
-  }
+    const [formState,action,isPending]= useActionState(loginAction.bind(null),{errors:{}})  
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-[#092979] to-[#00d4ff] ">
@@ -40,16 +22,15 @@ export default function LoginPage() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSubmit}>
+          <form action={action} >
             <div className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="username">Username</Label>
                 <Input
-                  id="email"
-                  type="email"
-                  placeholder="Enter your email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  id="username"
+                  type="username"
+                  placeholder="Enter your username"
+                name="username"
                   required
                 />
               </div>
@@ -59,19 +40,18 @@ export default function LoginPage() {
                   id="password"
                   type="password"
                   placeholder="Enter your password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                    name="password"
                   required
                 />
               </div>
             </div>
-            {error && (
-              <Alert variant="destructive" className="mt-4">
-                <AlertDescription>{error}</AlertDescription>
-              </Alert>
+            {formState.errors._form && (
+              <p className="text-red-500 text-sm mt-2">
+                {formState.errors._form}
+              </p>
             )}
-            <Button type="submit" className="w-full mt-6">
-              Log In
+            <Button type="submit" className="w-full mt-6 border-black border rounded-md">
+                {isPending ? 'Loading...' : 'Login'}
             </Button>
           </form>
         </CardContent>
