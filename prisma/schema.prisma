@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -14,13 +8,65 @@ datasource db {
 }
 
 model User {
-  id String @id @default(uuid())
-  email String @unique
-  username String @unique
-  password String
-  createdAt DateTime @default(now())
-  updateAt DateTime @updatedAt
+  id         String   @id @default(uuid()) // UUID
+  username   String   @unique
+  password   String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  teacherId  String?  @unique // One-to-one relationship
+  teacher    Teacher? @relation("TeacherUser", fields: [teacherId], references: [id])
 }
 
+model Classroom {
+  id         String    @id @default(uuid()) // UUID
+  section    String
+  gradeYear  Int
+  adviserId  String    @unique // One-to-one relationship
+  adviser    Teacher   @relation("Adviser", fields: [adviserId], references: [id])
+  students   Student[] // One-to-many relationship with Student
+}
 
+model Student {
+  id          String      @id @default(uuid()) // UUID for Student ID
+  firstName   String
+  middleName  String?
+  lastName    String
+  studentId   String      @unique
+  classroomId String?     // Foreign key to Classroom
+  classroom   Classroom?  @relation(fields: [classroomId], references: [id])
+  subjects    Subject[]   @relation("StudentSubjects")
+  grades      Grade[]     // One-to-many relationship with Grade
+}
 
+model Teacher {
+  id         String      @id @default(uuid()) // UUID
+  name       String
+  adviserTo  Classroom?  @relation("Adviser") // One-to-one relationship for advising
+  subjects   Subject[]   @relation("TeacherSubjects") // One-to-many relationship with Subject
+  user       User?       @relation("TeacherUser") // Optional relation to User
+}
+
+model Subject {
+  id          String     @id @default(uuid()) // UUID
+  name        String
+  teacherId   String     // Foreign key to Teacher
+  teacher     Teacher    @relation("TeacherSubjects", fields: [teacherId], references: [id])
+  students    Student[]  @relation("StudentSubjects")
+  grades      Grade[]    // One-to-many relationship with Grade
+}
+
+model Grade {
+  id               String  @id @default(uuid()) // UUID
+  studentId        String  // Foreign key to Student (should match Student's `id` type)
+  subjectId        String  // Foreign key to Subject
+  gradingPeriod    Int     // 1 = 1st Grading, 2 = 2nd Grading, etc.
+  writtenWork      Float   // Grade for Written Work (e.g., 30%)
+  performanceTask  Float   // Grade for Performance Task (e.g., 50%)
+  quarterlyAssess  Float   // Grade for Quarterly Assessment (e.g., 20%)
+  totalGrade       Float   // Sum of the three components (must equal 100%)
+
+  student          Student @relation(fields: [studentId], references: [id])
+  subject          Subject @relation(fields: [subjectId], references: [id])
+
+  @@unique([studentId, subjectId, gradingPeriod]) // Ensures no duplicate grades per period
+}

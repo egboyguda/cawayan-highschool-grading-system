@@ -4,9 +4,9 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
 interface Student {
-  id: number
+  id: string
   name: string
-  grade: string
+  studentId: string
 }
 
 interface StudentListProps {
@@ -23,16 +23,16 @@ const StudentList = ({ students }: StudentListProps) => {
         <Table>
           <TableHeader>
             <TableRow>
+              <TableHead className="text-blue-800">Student ID</TableHead>
               <TableHead className="text-blue-800">Name</TableHead>
-              <TableHead className="text-blue-800">Grade</TableHead>
               <TableHead className="text-blue-800">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {students.map((student) => (
+            {students && students.map((student) => (
               <TableRow key={student.id}>
-                <TableCell className="font-medium">{student.name}</TableCell>
-                <TableCell>{student.grade}</TableCell>
+                <TableCell className="font-medium">{student.studentId}</TableCell>
+                <TableCell>{student.name}</TableCell>
                 <TableCell>
                   <Link href={`/students/${student.id}/grading`}>
                     <Button variant="outline" size="sm">View Grades</Button>
