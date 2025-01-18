@@ -21,12 +21,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.className} bg-gray-100`}>
+      <body className={`${inter.className} bg-gray-100 w-full`}>
         <SidebarProvider>
-          <div className="flex h-screen">
+          <div className="flex h-screen w-full">
             <AppSidebar />
             <SidebarInset>
-              <main className="flex-1 p-8 overflow-auto">
+              <main className="flex-1 p-8 overflow-auto ">
                 <SidebarTrigger  className="mb-4 sidebar-trigger"/>
                 {children}
               </main>
