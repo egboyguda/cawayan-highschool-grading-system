@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { decrypt } from "./lib/auth";
 
 const routes={
-    protected:['/','/students']
+    protected:['/','/students','/teachers']
 }
 
 export default async function middleware(req:NextRequest){

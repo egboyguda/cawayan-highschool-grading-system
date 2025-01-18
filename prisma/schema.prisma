@@ -41,6 +41,9 @@ model Student {
 model Teacher {
   id         String      @id @default(uuid()) // UUID
   name       String
+  rank       String
+  licenseNum String
+  major      String
   adviserTo  Classroom?  @relation("Adviser") // One-to-one relationship for advising
   subjects   Subject[]   @relation("TeacherSubjects") // One-to-many relationship with Subject
   user       User?       @relation("TeacherUser") // Optional relation to User

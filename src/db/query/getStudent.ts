@@ -29,3 +29,15 @@ if (!session) return null;
         return [];
     }
 }
+export const getStudentCount = async () => {
+    const session = await verifySession();
+    if (!session) return null;
+  
+    try {
+      const studentCount = await db.student.count();
+      return studentCount;
+    } catch (error) {
+      console.error('Error fetching student count:', error);
+      return 0;
+    }
+}

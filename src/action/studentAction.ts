@@ -54,7 +54,8 @@ export async function addStudentAction(formState: StudentState, formData: FormDa
               }
          }) 
          revalidatePath('/students')
-         
+         revalidatePath('/')
+
     } catch (error) {
         if (error instanceof Error) {
             return {
