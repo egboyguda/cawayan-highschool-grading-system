@@ -1,14 +1,25 @@
+import { Users, BookOpen, GraduationCap } from 'lucide-react'
 import StatCard from '@/components/statCart'
-import { Users, BookOpen, Calendar } from 'lucide-react'
-
+import StudentEnrollmentChart from '@/components/dashboard/chart'
+import QuickLinks from '@/components/dashboard/link'
 
 const stats = [
-  { title: "Total Students", value: 1234, icon: Users },
-  { title: "Total Classes", value: 56, icon: BookOpen },
-  { title: "Upcoming Events", value: 3, icon: Calendar },
+  { 
+    title: "Total Students", 
+    value: 1234, 
+    icon: Users
+  },
+  { 
+    title: "Total Classes", 
+    value: 56, 
+    icon: BookOpen
+  },
+  { 
+    title: "Total Teachers", 
+    value: 78, 
+    icon: GraduationCap
+  },
 ]
-
-
 
 export default function Dashboard() {
   return (
@@ -19,7 +30,10 @@ export default function Dashboard() {
           <StatCard key={index} {...stat} />
         ))}
       </div>
-    
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <StudentEnrollmentChart />
+        <QuickLinks />
+      </div>
     </div>
   )
 }
