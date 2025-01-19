@@ -61,7 +61,7 @@ const ClassList: React.FC<ClassListProps> = ({ initialClasses, searchTerm }) => 
                 <TableCell>{class_.school_year}</TableCell>
                 
                 <TableCell>
-                  <Link href={`/classes/${class_.id}/students`}>
+                  <Link href={`/subject/${class_.id}/student`}>
                     <Button variant="outline" size="sm">View Students</Button>
                   </Link>
                 </TableCell>

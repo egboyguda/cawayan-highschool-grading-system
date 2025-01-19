@@ -44,9 +44,9 @@ const AppSidebar = () => {
           </SidebarMenuItem>
           <SidebarMenuItem>
             <SidebarMenuButton asChild>
-              <Link href="/class" className="flex items-center space-x-2 text-gray-700 hover:text-blue-700 hover:bg-blue-50">
+              <Link href="/subject" className="flex items-center space-x-2 text-gray-700 hover:text-blue-700 hover:bg-blue-50">
                 <BookOpen size={20} />
-                <span>Classes</span>
+                <span>Subject</span>
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
