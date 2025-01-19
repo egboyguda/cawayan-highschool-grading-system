@@ -1,29 +1,33 @@
-import { useState } from 'react'
+import { useActionState, useState } from 'react'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { addStudent } from '@/action/subjectAction'
 
-interface AddStudentFormProps {
-  onAddStudent: (name: string) => void
+
+interface addStudentProps{
+  subjectId:string
 }
-
-export function AddStudentForm() {
-  const [newStudent, setNewStudent] = useState({ name: '' })
-
-
+export function AddStudentForm({subjectId}:addStudentProps) {
+  const[formState,action,isPending] =useActionState(addStudent.bind(null,subjectId),{errors:{}})  
 
   return (
-    <form  className="space-y-4">
+    <form action={action}  className="space-y-4">
       <div className="space-y-2">
         <Label htmlFor="studentName">Student Name</Label>
         <Input
           id="studentName"
-          value={newStudent.name}
-          onChange={(e) => setNewStudent({ ...newStudent, name: e.target.value })}
+          name='studentId'
           required
         />
+      {formState.errors.studentId &&(<p className="text-red-500 text-sm mt-2">
+                {formState.errors.studentId}
+              </p>)}
       </div>
-      <Button type="submit">Add Student</Button>
+      {formState.errors._form &&(<p className="text-red-500 text-sm mt-2">
+                {formState.errors._form}
+              </p>)}
+      <Button type="submit">{isPending?'SAVING...':'SAVE'}</Button>
     </form>
   )
 }

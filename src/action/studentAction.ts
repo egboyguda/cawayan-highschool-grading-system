@@ -21,6 +21,9 @@ interface StudentState {
     }
 }
 
+
+
+
 export async function addStudentAction(formState: StudentState, formData: FormData): Promise<StudentState> {
     const result = studentSchema.safeParse({
         first_name: formData.get('first_name'),
@@ -73,3 +76,4 @@ export async function addStudentAction(formState: StudentState, formData: FormDa
         errors: {},
     };
 }
+

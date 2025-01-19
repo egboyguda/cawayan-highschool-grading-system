@@ -78,3 +78,73 @@ export async function addSubjectAction(formState: SubjectState, formData: FormDa
     }
     return { errors: {} };
 }
+
+
+const studentIdSchema = z.object({
+    studentId: z.string().min(8),
+});
+
+interface StudentState {
+    errors: {
+        studentId?: string[];
+        _form?: string[];
+    };
+}
+
+export async function addStudent(
+    subjectId: string,
+    formState: StudentState,
+    formData: FormData
+): Promise<StudentState> {
+    // Validate the `studentId` input
+    const result = studentIdSchema.safeParse({
+        studentId: formData.get('studentId'),
+    });
+
+    if (!result.success) {
+        return {
+            errors: result.error.flatten().fieldErrors,
+        };
+    }
+
+    if (!subjectId) {
+        return {
+            errors: {
+                _form: ['Subject ID is required.'],
+            },
+        };
+    }
+
+    const studentId = result.data.studentId;
+
+    try {
+        // Find the subject and its students
+        await db.student.update({
+            where:{studentId:studentId},
+            data:{
+                subjects:{
+                    connect:{
+                        id:subjectId
+                    }
+                }
+            }
+        })
+       
+    } catch (error) {
+      if(error instanceof Error){
+        return {
+            errors:{
+                _form:[error.message]
+            }
+        }
+      }
+        return {
+            errors: {
+                _form: ['An unexpected error occurred. Please try again later.'],
+            },
+        };
+    }
+    return {
+        errors:{}
+    }
+}

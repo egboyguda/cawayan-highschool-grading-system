@@ -167,7 +167,7 @@ export function ClassStudents({subject}:ClassStudentsProps) {
         </div>
       </div>
       <div className="flex justify-end space-x-4">
-        <Button onClick={() => setIsAddStudentDialogOpen(true)}>Add New Student</Button>
+        <Button onClick={() => setIsAddStudentDialogOpen(true)} className='bg-black text-white'>Add New Student</Button>
         <Button onClick={() => setIsPercentageDialogOpen(true)}>Set Grade Percentages</Button>
       </div>
       <Card className="bg-white">
@@ -224,14 +224,14 @@ export function ClassStudents({subject}:ClassStudentsProps) {
       </Dialog>
 
       <Dialog open={isAddStudentDialogOpen} onOpenChange={setIsAddStudentDialogOpen}>
-        <DialogContent className="sm:max-w-[425px]">
+        <DialogContent className="sm:max-w-[425px] bg-white">
           <DialogHeader>
             <DialogTitle>Add New Student</DialogTitle>
             <DialogDescription>
               Enter the name of the new student.
             </DialogDescription>
           </DialogHeader>
-          <AddStudentForm  />
+          <AddStudentForm subjectId={subject.id}  />
         </DialogContent>
       </Dialog>
 
