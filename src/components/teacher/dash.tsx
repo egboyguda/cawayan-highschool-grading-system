@@ -11,7 +11,8 @@ interface Teacher {
   name: string
   licenseNumber: string
   rank: string
-  major: string
+  major: string,
+  teacherId:string
 }
 interface TeacherListProps {
     initialTeachers: Teacher[]

@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { decrypt } from "./lib/auth";
 
 const routes={
-    protected:['/','/students','/teachers']
+    protected:['/','/students','/teachers','/class']
 }
 
 export default async function middleware(req:NextRequest){
@@ -17,7 +17,13 @@ export default async function middleware(req:NextRequest){
     if(isProtected && !session){
         return NextResponse.redirect(new URL('/login',req.nextUrl));
     }
+    if(!isProtected && session){
+        return NextResponse.redirect(new URL('/',req.nextUrl));
+    }
+
+    
     return NextResponse.next();
+
 
 }
 export const config = {

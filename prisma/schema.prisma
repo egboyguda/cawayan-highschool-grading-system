@@ -20,7 +20,7 @@ model User {
 model Classroom {
   id         String    @id @default(uuid()) // UUID
   section    String
-  gradeYear  Int
+  year_level String
   adviserId  String    @unique // One-to-one relationship
   adviser    Teacher   @relation("Adviser", fields: [adviserId], references: [id])
   students   Student[] // One-to-many relationship with Student
@@ -36,6 +36,7 @@ model Student {
   classroom   Classroom?  @relation(fields: [classroomId], references: [id])
   subjects    Subject[]   @relation("StudentSubjects")
   grades      Grade[]     // One-to-many relationship with Grade
+  year_level  String      @default("7")
 }
 
 model Teacher {
@@ -43,6 +44,7 @@ model Teacher {
   name       String
   rank       String
   licenseNum String
+  teacherId  String      @unique
   major      String
   adviserTo  Classroom?  @relation("Adviser") // One-to-one relationship for advising
   subjects   Subject[]   @relation("TeacherSubjects") // One-to-many relationship with Subject
@@ -52,10 +54,13 @@ model Teacher {
 model Subject {
   id          String     @id @default(uuid()) // UUID
   name        String
+  subjectId   String
   teacherId   String     // Foreign key to Teacher
   teacher     Teacher    @relation("TeacherSubjects", fields: [teacherId], references: [id])
   students    Student[]  @relation("StudentSubjects")
   grades      Grade[]    // One-to-many relationship with Grade
+  year_level  String
+  school_year String
 }
 
 model Grade {
@@ -73,3 +78,5 @@ model Grade {
 
   @@unique([studentId, subjectId, gradingPeriod]) // Ensures no duplicate grades per period
 }
+
+

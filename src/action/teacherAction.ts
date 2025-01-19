@@ -51,12 +51,24 @@ export async function addTeacherAction(formState: TeacherState, formData: FormDa
         }
     }
     try {
+    const year = new Date().getFullYear().toString(); // Get the current year as a string
+    const teacherCount = await db.teacher.count({
+        where: {
+          teacherId: {
+            startsWith: year, // Filter for teachers starting with the year
+          },
+        },
+      });
+    
+      const uniqueSuffix = (teacherCount + 1).toString().padStart(4, '0'); // Ensure 4-digit suffix
+      const teacherId = `T${year}${uniqueSuffix}`;
      const teacher=   await db.teacher.create({
             data: {
                 name: result.data.name,
                 licenseNum: result.data.licenseNumber,
                 rank: result.data.rank,
                 major: result.data.major,
+                teacherId:teacherId
                 
             }
         }) 

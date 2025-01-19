@@ -3,18 +3,18 @@ import {db} from "@/db";
 import { verifySession } from "@/lib/dal";
 
 interface Teacher {
-    id: number;
+    id: string;
     name: string;
     licenseNumber: string;
     rank: string;
     major: string;
+    teacherId:string;
   }
   
   interface TeacherListProps {
     initialTeachers: Teacher[];
   }
-  
-  export const getAllTeachers = async (): Promise<Teacher[] | null> => {
+ export const getAllTeachers = async (): Promise<Teacher[] | null> => {
     // Verify session
     const session = await verifySession();
     if (!session) {
@@ -30,6 +30,7 @@ interface Teacher {
           licenseNum: true, // Correct the database field to match the schema if needed
           rank: true,
           major: true,
+          teacherId:true
         },
       });
   
@@ -40,6 +41,7 @@ interface Teacher {
         licenseNumber: teacher.licenseNum, // Map `licenseNum` to `licenseNumber`
         rank: teacher.rank,
         major: teacher.major,
+        teacherId:teacher.teacherId
       }));
     } catch (error) {
       console.error('Error fetching teachers:', error);
