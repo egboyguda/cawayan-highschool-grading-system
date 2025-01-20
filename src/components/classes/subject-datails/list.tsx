@@ -43,9 +43,9 @@ export function StudentList({ students, selectedGradingPeriod, calculateGradingP
         {students.map((student) => (
           <TableRow key={student.id}>
             <TableCell className="font-medium">{student.name}</TableCell>
-            <TableCell>{student.grades.map(e=>e.performanceTask)}</TableCell>
-            <TableCell>{student.grades.map(e=>e.writtenWork)}</TableCell>
-            <TableCell>{student.grades.map(e=>e.quarterlyAssess)}</TableCell>
+            <TableCell>{student.grades.map(e=>e.gradingPeriod===selectedGradingPeriod+1 && e.performanceTask)}</TableCell>
+            <TableCell>{student.grades.map(e=>e.gradingPeriod ===selectedGradingPeriod+1 && e.writtenWork)}</TableCell>
+            <TableCell>{student.grades.map(e=>e.gradingPeriod ===selectedGradingPeriod+1 && e.quarterlyAssess)}</TableCell>
             <TableCell>
               {calculateGradingPeriodAverage(student.id, selectedGradingPeriod).toFixed(2)}
             </TableCell>

@@ -201,8 +201,8 @@ export function ClassStudents({subject}:ClassStudentsProps) {
           <Label htmlFor="gradingPeriod">Grading Period:</Label>
           <Select
            name='grading'
-            value={selectedGradingPeriod.toString()}
-            onValueChange={(value) => setSelectedGradingPeriod(Number(value))}
+            //value={selectedGradingPeriod.toString()}
+            //onValueChange={(value) => setSelectedGradingPeriod(Number(value))}
           >
             <SelectTrigger className="w-[180px]">
               <SelectValue placeholder="Select grading period" />

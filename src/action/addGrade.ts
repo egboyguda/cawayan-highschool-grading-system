@@ -1,6 +1,7 @@
 'use server';
 import { z } from 'zod';
 import { db } from '@/db';
+import { revalidatePath } from 'next/cache';
 
 const gradeSchema = z.object({
     grade: z.number({ message: 'Grade must be a number.' }),
@@ -58,7 +59,7 @@ export async function addGrade(
                 [type]: grade,
             },
         });
-
+        revalidatePath('/subject/[id]/student');
         return { errors: {} }; // Return empty errors on success
     } catch (error) {
         console.error('Error while adding grade:', error);
