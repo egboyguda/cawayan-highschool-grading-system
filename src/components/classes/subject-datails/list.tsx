@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button"
 
 interface Student {
   id: string;
+  studentId: string;
   name: string;
   grades: Grade[];
 }
@@ -16,11 +17,12 @@ interface Grade {
 interface StudentListProps {
   students: Student[]
   selectedGradingPeriod: number
+  onAddGrade: (studentId:string) => void
 
   calculateGradingPeriodAverage: (studentId: string, period: number) => number
 }
 
-export function StudentList({ students, selectedGradingPeriod, calculateGradingPeriodAverage }: StudentListProps) {
+export function StudentList({ students, selectedGradingPeriod, calculateGradingPeriodAverage ,onAddGrade}: StudentListProps) {
   if (students.length === 0) {
     return <p className="text-center text-gray-500 my-4">No students found.</p>
   }
@@ -51,6 +53,7 @@ export function StudentList({ students, selectedGradingPeriod, calculateGradingP
               <Button 
                 variant="outline" 
                 size="sm"
+                onClick={() => onAddGrade(student.id)}
                 
               >
                 Add Grade

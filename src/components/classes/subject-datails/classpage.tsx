@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useActionState, useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -23,6 +23,7 @@ import {
 import { GradePercentagesForm } from './grade-percentage'
 import { AddStudentForm } from './addStudent'
 import { StudentList } from './list'
+import { addGrade } from '@/action/addGrade'
 
 
 interface Grade {
@@ -35,6 +36,7 @@ interface Grade {
 
 interface Student {
   id: string;
+  studentId: string;
   name: string;
   grades: Grade[];
 }
@@ -50,6 +52,7 @@ interface SubjectWithStudent{
   school_year: string;
   students: {
       id: string;
+      studentId: string;
       name: string;
       grades: {
           id: string;
@@ -87,6 +90,7 @@ export function ClassStudents({subject}:ClassStudentsProps) {
   const [gradeType, setGradeType] = useState<'performanceTask' | 'writtenWork' | 'quarterlyAssessment'>('performanceTask')
   const [searchTerm, setSearchTerm] = useState('')
 
+  const [formState,action ,isPending]=useActionState(addGrade.bind(null,subject.id,selectedStudent?.id || ''),{errors:{}})
   const handleAddGrade = (studentId:string) => {
     setSelectedStudent(students.find(s => s.id === studentId) || null)
     setIsAddGradeDialogOpen(true)
@@ -179,22 +183,43 @@ export function ClassStudents({subject}:ClassStudentsProps) {
             students={filteredStudents}
             selectedGradingPeriod={selectedGradingPeriod}
             calculateGradingPeriodAverage={calculateGradingPeriodAverage}
+            onAddGrade={handleAddGrade}
           />
         </CardContent>
       </Card>
       
       <Dialog open={isAddGradeDialogOpen} onOpenChange={setIsAddGradeDialogOpen}>
-        <DialogContent className="sm:max-w-[425px]">
+        <DialogContent className="sm:max-w-[425px] bg-white">
           <DialogHeader>
             <DialogTitle>Add Grade for {selectedStudent?.name}</DialogTitle>
             <DialogDescription>
               Enter the grade for the selected component.
             </DialogDescription>
           </DialogHeader>
-          <form onSubmit={handleGradeSubmit} className="space-y-4">
+          <form action={action}  className="space-y-4">
+          <div className="flex items-center space-x-4">
+          <Label htmlFor="gradingPeriod">Grading Period:</Label>
+          <Select
+           name='grading'
+            value={selectedGradingPeriod.toString()}
+            onValueChange={(value) => setSelectedGradingPeriod(Number(value))}
+          >
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder="Select grading period" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="1">1st Grading</SelectItem>
+              <SelectItem value="2">2nd Grading</SelectItem>
+              <SelectItem value="3">3rd Grading</SelectItem>
+              <SelectItem value="4">4th Grading</SelectItem>
+            </SelectContent>
+          </Select>
+          {formState.errors.grading && <p className="text-red-500">{formState.errors.grading}</p>}
+        </div>
             <div className="space-y-2">
               <Label htmlFor="gradeType">Grade Type</Label>
               <Select
+              name='type'
                 value={gradeType}
                 onValueChange={(value: 'performanceTask' | 'writtenWork' | 'quarterlyAssessment') => setGradeType(value)}
               >
@@ -207,18 +232,23 @@ export function ClassStudents({subject}:ClassStudentsProps) {
                   <SelectItem value="quarterlyAssessment">Quarterly Assessment</SelectItem>
                 </SelectContent>
               </Select>
+              {formState.errors.type && <p className="text-red-500">{formState.errors.type}</p>}
             </div>
             <div className="space-y-2">
-              <Label htmlFor="score">Score</Label>
+              <Label htmlFor="score">Grade</Label>
               <Input
                 id="score"
                 type="number"
                 min="0"
                 max="100"
                 required
+                name='grade'
               />
+              
+              {formState.errors.grade && <p className="text-red-500">{formState.errors.grade}</p>}
             </div>
-            <Button type="submit">Save</Button>
+            {formState.errors._form && <p className="text-red-500">{formState.errors._form}</p>}
+            <Button type="submit">{isPending?'SAVING...':'SAVE'}</Button>
           </form>
         </DialogContent>
       </Dialog>

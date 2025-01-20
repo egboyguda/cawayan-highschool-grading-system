@@ -19,6 +19,7 @@ interface SubjectWithStudent{
     school_year: string;
     students: {
         id: string;
+        studentId: string
         name: string;
         grades: {
             id: string;
@@ -99,7 +100,7 @@ export const getSubject = async (id: string): Promise<SubjectWithStudent | null>
                                 id: true,
                                gradingPeriod: true,
                                writtenWork: true,
-                                quarterlyAssess: true,
+                                quarterlyAssessment: true,
                              performanceTask: true,
 
                             },
@@ -121,13 +122,14 @@ export const getSubject = async (id: string): Promise<SubjectWithStudent | null>
             subjectId: subject.subjectId,
             school_year: subject.school_year,
             students: subject.students.map((student) => ({
-                id: student.studentId,
+                id: student.id,
+                studentId:student.studentId,
                 name: `${student.firstName} ${student.lastName}`,
                 grades: student.grades.map((grade) => ({
                     id: grade.id,
                     gradingPeriod: grade.gradingPeriod || 1,
                     writtenWork: grade.writtenWork || 0,
-                    quarterlyAssess: grade.quarterlyAssess || 0,
+                    quarterlyAssess: grade.quarterlyAssessment || 0,
                     performanceTask: grade.performanceTask || 0,
                 })),
             })),

@@ -68,10 +68,10 @@ model Grade {
   studentId        String  // Foreign key to Student (should match Student's `id` type)
   subjectId        String  // Foreign key to Subject
   gradingPeriod    Int     // 1 = 1st Grading, 2 = 2nd Grading, etc.
-  writtenWork      Float   // Grade for Written Work (e.g., 30%)
-  performanceTask  Float   // Grade for Performance Task (e.g., 50%)
-  quarterlyAssess  Float   // Grade for Quarterly Assessment (e.g., 20%)
-  totalGrade       Float   // Sum of the three components (must equal 100%)
+  writtenWork      Float?   // Grade for Written Work (e.g., 30%)
+  performanceTask  Float?   // Grade for Performance Task (e.g., 50%)
+  quarterlyAssessment  Float?   // Grade for Quarterly Assessment (e.g., 20%)
+   // Sum of the three components (must equal 100%)
 
   student          Student @relation(fields: [studentId], references: [id])
   subject          Subject @relation(fields: [subjectId], references: [id])
