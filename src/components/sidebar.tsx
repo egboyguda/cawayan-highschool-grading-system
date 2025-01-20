@@ -12,11 +12,11 @@ import {
 
 const AppSidebar = () => {
   return (
-    <Sidebar>
+    <Sidebar >
       <SidebarHeader className="bg-blue-700 p-6">
         <h1 className="text-2xl font-bold text-white">School Manager</h1>
       </SidebarHeader>
-      <SidebarContent>
+      <SidebarContent className='bg-white'>
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton asChild>
