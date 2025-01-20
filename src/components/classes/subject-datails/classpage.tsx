@@ -11,7 +11,6 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog"
 import {
   Select,
@@ -69,11 +68,8 @@ interface ClassStudentsProps{
 }
 
 export function ClassStudents({subject}:ClassStudentsProps) {
-  if(!subject){
-    return <div>not found</div>
-  }
-
-  const [students, setStudents] = useState<Student[]>(subject.students)
+  
+  const [students] = useState<Student[]>(subject?.students || []);
 
   const [percentages, setPercentages] = useState([
     { performanceTask: 40, writtenWork: 40, quarterlyAssessment: 20 },
@@ -90,23 +86,28 @@ export function ClassStudents({subject}:ClassStudentsProps) {
   const [gradeType, setGradeType] = useState<'performanceTask' | 'writtenWork' | 'quarterlyAssessment'>('performanceTask')
   const [searchTerm, setSearchTerm] = useState('')
 
-  const [formState,action ,isPending]=useActionState(addGrade.bind(null,subject.id,selectedStudent?.id || ''),{errors:{}})
+ 
+  const [formState,action ,isPending]=useActionState(addGrade.bind(null,subject?.id|| '',selectedStudent?.id || ''),{errors:{}})
   const handleAddGrade = (studentId:string) => {
     setSelectedStudent(students.find(s => s.id === studentId) || null)
     setIsAddGradeDialogOpen(true)
   }
-
-  const handleGradeSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!selectedStudent) return
-
-    const form = e.target as HTMLFormElement
-    const score = Number(form.score.value)
-
-
-    setIsAddGradeDialogOpen(false)
+  if(!subject){
+    return null
   }
+  
 
+  // const handleGradeSubmit = (e: React.FormEvent) => {
+  //   e.preventDefault()
+  //   if (!selectedStudent) return
+
+  //   const form = e.target as HTMLFormElement
+  //   const score = Number(form.score.value)
+
+
+  //   setIsAddGradeDialogOpen(false)
+  // }
+  
 
 
   const handleUpdatePercentages = (performanceTask: number, writtenWork: number, quarterlyAssessment: number) => {

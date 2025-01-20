@@ -15,7 +15,7 @@ interface ActivityListProps {
   getHighestScore: (activityType: 'performanceTasks' | 'writtenWorks', activityIndex: number) => number
 }
 
-export function ActivityList({ performanceTasks, writtenWorks, percentages, selectedGradingPeriod, getHighestScore }: ActivityListProps) {
+export function ActivityList({ performanceTasks, writtenWorks, percentages,/* selectedGradingPeriod*/ getHighestScore }: ActivityListProps) {
   return (
     <Tabs defaultValue="performanceTasks">
       <TabsList>

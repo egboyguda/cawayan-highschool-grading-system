@@ -11,9 +11,9 @@ interface Teacher {
     teacherId:string;
   }
   
-  interface TeacherListProps {
-    initialTeachers: Teacher[];
-  }
+  // interface TeacherListProps {
+  //   initialTeachers: Teacher[];
+  // }
  export const getAllTeachers = async (): Promise<Teacher[] | null> => {
     // Verify session
     const session = await verifySession();

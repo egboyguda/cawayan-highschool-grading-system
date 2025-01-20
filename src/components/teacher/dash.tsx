@@ -34,7 +34,7 @@ const calculateStatistics = (teachers: Teacher[]=[]) => {
 }
 
 export default function TeachersPage({ initialTeachers}: TeacherListProps) {
-    const [teachers, setTeachers] = useState<Teacher[]>(initialTeachers)    
+  
   const [searchTerm, setSearchTerm] = useState('')
   const statistics = calculateStatistics(initialTeachers)
 

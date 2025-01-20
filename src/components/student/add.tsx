@@ -28,7 +28,7 @@ const AddStudentForm = () => {
         <DialogHeader>
           <DialogTitle>Add New Student</DialogTitle>
           <DialogDescription>
-            Enter the details of the new student here. Click save when you're done.
+            Enter the details of the new student here. Click save when you&apos;re done.
           </DialogDescription>
         </DialogHeader>
         <form action={action} >

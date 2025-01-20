@@ -27,21 +27,11 @@ interface ClassListProps {
   
 }
 
-interface Class {
-  id: number
-  name: string
-  teacher: string
-  subject: string
-  year: string
-  students: number
-  section: string
-  schoolYear: string
-}
 
 
 
 export default function Classes( {initialClasses}: ClassListProps) {
-  const [classes, setClasses] =useState<Subject[]>(initialClasses)
+  const [classes] =useState<Subject[]>(initialClasses)
   const [searchTerm, setSearchTerm] = useState('')
   const [isOpen, setIsOpen] = useState(false)
 
@@ -59,7 +49,7 @@ export default function Classes( {initialClasses}: ClassListProps) {
             <DialogHeader>
               <DialogTitle>Add New Class</DialogTitle>
               <DialogDescription>
-                Enter the details of the new Subject here. Click save when you're done.
+                Enter the details of the new Subject here. Click save when you&apos;re done.
               </DialogDescription>
             </DialogHeader>
             <AddClassForm  />

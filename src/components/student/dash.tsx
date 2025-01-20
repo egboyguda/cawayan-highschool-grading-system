@@ -21,13 +21,13 @@ interface StudentListProps {
 
 
 export default function StudentsPage({ students: initialStudents }: StudentListProps) {
-  const [students, setStudents] = useState<Student[]>(initialStudents)
+  const [students] = useState<Student[]>(initialStudents)
   const [searchTerm, setSearchTerm] = useState('')
 
-  const handleAddStudent = (newStudent: Omit<Student, 'id'>) => {
-    const id = (students.length + 1).toString()
-    setStudents([...students, { id, ...newStudent }])
-  }
+  // const handleAddStudent = (newStudent: Omit<Student, 'id'>) => {
+  //   const id = (students.length + 1).toString()
+  //   setStudents([...students, { id, ...newStudent }])
+  // }
   console.log(students)
 
   const filteredStudents = students && students.filter(student => 

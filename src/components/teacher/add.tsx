@@ -28,7 +28,7 @@ const [formState,action,isPending]=useActionState(addTeacherAction.bind(null),{e
         <DialogHeader>
           <DialogTitle>Add New Teacher</DialogTitle>
           <DialogDescription>
-            Enter the details of the new teacher here. Click save when you're done.
+            Enter the details of the new teacher here. Click save when you&apos;re done.
           </DialogDescription>
         </DialogHeader>
         <form action={action} className="space-y-4">

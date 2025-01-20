@@ -66,7 +66,7 @@ const AddClassForm= () => {
         formState.errors._form && <p className="text-red-500">{formState.errors._form}</p>
       }
       </div>
-      <Button type="submit" className="w-full border border-black">Save</Button>
+      <Button type="submit" className="w-full border border-black">{isPending?'SAVING...':'SAVE'}</Button>
     </form>
   )
 }
