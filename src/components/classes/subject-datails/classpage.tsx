@@ -107,24 +107,24 @@ export function ClassStudents({subject,gradePercentage}:ClassStudentsProps,
   if(!subject){
     return null
   }
-  const handleAddGradePercentage = (
-    name: string,
-    performanceTask: number,
-    writtenWork: number,
-    quarterlyAssessment: number,
-  ) => {
-    const newId = (Number.parseInt(gradePercentages[gradePercentages.length - 1].id) + 1).toString()
-    const newPercentage: GradePercentage = {
-      id: newId,
-      name,
-      performanceTask,
-      writtenWork,
-      quarterlyAssessment,
-    }
-    setGradePercentages([...gradePercentages, newPercentage])
-    setSelectedPercentageId(newId)
-    setIsPercentageDialogOpen(false)
-  }
+  // const handleAddGradePercentage = (
+  //   name: string,
+  //   performanceTask: number,
+  //   writtenWork: number,
+  //   quarterlyAssessment: number,
+  // ) => {
+  //   const newId = (Number.parseInt(gradePercentages[gradePercentages.length - 1].id) + 1).toString()
+  //   const newPercentage: GradePercentage = {
+  //     id: newId,
+  //     name,
+  //     performanceTask,
+  //     writtenWork,
+  //     quarterlyAssessment,
+  //   }
+  //   setGradePercentages([...gradePercentages, newPercentage])
+  //   setSelectedPercentageId(newId)
+  //   setIsPercentageDialogOpen(false)
+  // }
 
   // const handleGradeSubmit = (e: React.FormEvent) => {
   //   e.preventDefault()
