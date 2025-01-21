@@ -27,7 +27,7 @@ export default async function RootLayout({
        {user ? (
        <SidebarProvider>
        <div className="flex h-screen w-full">
-         <AppSidebar />
+         <AppSidebar  />
          <SidebarInset>
            <main className="flex-1 p-8 overflow-auto ">
              <SidebarTrigger  className="mb-4 sidebar-trigger"/>

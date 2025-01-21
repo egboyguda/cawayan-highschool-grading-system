@@ -78,5 +78,14 @@ model Grade {
 
   @@unique([studentId, subjectId, gradingPeriod]) // Ensures no duplicate grades per period
 }
+model GradePercent {
+  id                 String  @id @default(uuid())
+  writtenWork        Float   // Percentage for Written Work
+  performanceTask    Float   // Percentage for Performance Task
+  quarterlyAssessment Float   // Percentage for Quarterly Assessment
+  createdBy          String? // Optional: Who created it (e.g., admin or teacher)
+  @@unique([writtenWork, performanceTask, quarterlyAssessment]) 
+}
+
 
 

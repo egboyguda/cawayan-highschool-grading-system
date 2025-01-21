@@ -1,5 +1,6 @@
 
 import { ClassStudents } from "@/components/classes/subject-datails/classpage";
+import { getAllGradesPercent } from "@/db/query/getGradePercet";
 import { getSubject } from "@/db/query/getSubject";
 
 export default async function ClassStudentsPage({params,}:{
@@ -7,8 +8,9 @@ export default async function ClassStudentsPage({params,}:{
 }) {
   const id=(await params).id 
   const subject = await getSubject(id)
+  const gradePercentage= await getAllGradesPercent()
   return (
-    <ClassStudents subject={subject || null} />
+    <ClassStudents subject={subject || null } gradePercentage={gradePercentage || []}/>
   );
   }
 

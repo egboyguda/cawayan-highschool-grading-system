@@ -41,7 +41,13 @@ interface Student {
 }
 
 
-
+interface GradePercentage {
+  id: string
+  name: string
+  performanceTask: number
+  writtenWork: number
+  quarterlyAssessment: number
+}
 interface SubjectWithStudent{
   id: string;
   name: string;
@@ -65,18 +71,24 @@ interface SubjectWithStudent{
 }
 interface ClassStudentsProps{
   subject:SubjectWithStudent | null
+  gradePercentage:GradePercentage[]
 }
 
-export function ClassStudents({subject}:ClassStudentsProps) {
+export function ClassStudents({subject,gradePercentage}:ClassStudentsProps,
+) {
   
   const [students] = useState<Student[]>(subject?.students || []);
 
-  const [percentages, setPercentages] = useState([
+  const [percentages] = useState([
     { performanceTask: 40, writtenWork: 40, quarterlyAssessment: 20 },
     { performanceTask: 40, writtenWork: 40, quarterlyAssessment: 20 },
     { performanceTask: 40, writtenWork: 40, quarterlyAssessment: 20 },
     { performanceTask: 40, writtenWork: 40, quarterlyAssessment: 20 },
   ])
+  const [gradePercentages, setGradePercentages] = useState<GradePercentage[]>(gradePercentage)
+
+  const [selectedPercentageId, setSelectedPercentageId] = useState(gradePercentages[0].id)
+
 
   const [selectedGradingPeriod, setSelectedGradingPeriod] = useState(0)
   const [selectedStudent, setSelectedStudent] = useState<Student | null>(null)
@@ -95,7 +107,24 @@ export function ClassStudents({subject}:ClassStudentsProps) {
   if(!subject){
     return null
   }
-  
+  // const handleAddGradePercentage = (
+  //   name: string,
+  //   performanceTask: number,
+  //   writtenWork: number,
+  //   quarterlyAssessment: number,
+  // ) => {
+  //   const newId = (Number.parseInt(gradePercentages[gradePercentages.length - 1].id) + 1).toString()
+  //   const newPercentage: GradePercentage = {
+  //     id: newId,
+  //     name,
+  //     performanceTask,
+  //     writtenWork,
+  //     quarterlyAssessment,
+  //   }
+  //   setGradePercentages([...gradePercentages, newPercentage])
+  //   setSelectedPercentageId(newId)
+  //   setIsPercentageDialogOpen(false)
+  // }
 
   // const handleGradeSubmit = (e: React.FormEvent) => {
   //   e.preventDefault()
@@ -110,12 +139,12 @@ export function ClassStudents({subject}:ClassStudentsProps) {
   
 
 
-  const handleUpdatePercentages = (performanceTask: number, writtenWork: number, quarterlyAssessment: number) => {
-    const updatedPercentages = [...percentages]
-    updatedPercentages[selectedGradingPeriod] = { performanceTask, writtenWork, quarterlyAssessment }
-    setPercentages(updatedPercentages)
-    setIsPercentageDialogOpen(false)
-  }
+  // const handleUpdatePercentages = (performanceTask: number, writtenWork: number, quarterlyAssessment: number) => {
+  //   const updatedPercentages = [...percentages]
+  //   updatedPercentages[selectedGradingPeriod] = { performanceTask, writtenWork, quarterlyAssessment }
+  //   setPercentages(updatedPercentages)
+  //   setIsPercentageDialogOpen(false)
+  // }
 
   const calculateGradingPeriodAverage = (studentId: string, period: number) => {
     const student = students.find(s => s.id === studentId)
@@ -135,21 +164,23 @@ export function ClassStudents({subject}:ClassStudentsProps) {
   const filteredStudents = students.filter(student =>
     student.name.toLowerCase().includes(searchTerm.toLowerCase())
   )
-
+  const formatGradePercentage = (percentage: GradePercentage) => {
+    return `${percentage.name} (PT: ${percentage.performanceTask}%, WW: ${percentage.writtenWork}%, QA: ${percentage.quarterlyAssessment}%)`
+  }
   return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
+    <div className="space-y-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="col-span-full">
         <div>
           <h1 className="text-3xl font-bold text-blue-900">{subject.name}</h1>
           <p className="text-lg text-blue-600">School Year: {subject.school_year}</p>
         </div>
-        <div className="flex items-center space-x-4">
+        <div className="space-y-2 ">
           <Label htmlFor="gradingPeriod">Grading Period:</Label>
           <Select
             value={selectedGradingPeriod.toString()}
             onValueChange={(value) => setSelectedGradingPeriod(Number(value))}
           >
-            <SelectTrigger className="w-[180px]">
+            <SelectTrigger className="w-full">
               <SelectValue placeholder="Select grading period" />
             </SelectTrigger>
             <SelectContent>
@@ -160,7 +191,34 @@ export function ClassStudents({subject}:ClassStudentsProps) {
             </SelectContent>
           </Select>
         </div>
-        <div className="flex items-center space-x-4">
+        <div className="space-y-2">
+          <Label htmlFor="gradePercentage">Grade Percentage:</Label>
+          <Select
+            value={selectedPercentageId}
+            onValueChange={(value) => {
+              if (value === "add") {
+                setIsPercentageDialogOpen(true)
+              } else {
+                setSelectedPercentageId(value)
+                setGradePercentages(gradePercentages.filter(percentage => percentage.id === value))
+              }
+            }}
+          >
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Select grade percentage" />
+            </SelectTrigger>
+            <SelectContent>
+              {gradePercentages.map((percentage) => (
+                <SelectItem key={percentage.id} value={percentage.id}>
+                  {formatGradePercentage(percentage)}
+                </SelectItem>
+              ))}
+              <SelectItem value="add">Add New Percentage</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+       
+        <div className="space-y-2">
           <Label htmlFor="search">Search:</Label>
           <Input
             id="search"
@@ -171,16 +229,17 @@ export function ClassStudents({subject}:ClassStudentsProps) {
           />
         </div>
       </div>
-      <div className="flex justify-end space-x-4">
+      <div className="space-y-2">
         <Button onClick={() => setIsAddStudentDialogOpen(true)} className='bg-black text-white'>Add New Student</Button>
         <Button onClick={() => setIsPercentageDialogOpen(true)}>Set Grade Percentages</Button>
       </div>
-      <Card className="bg-white">
+      <Card className="bg-white col-span-full">
         <CardHeader>
           <CardTitle className="text-blue-900">Student List - {selectedGradingPeriod + 1}st Grading</CardTitle>
         </CardHeader>
         <CardContent>
-          <StudentList 
+          <StudentList
+            perCent={gradePercentages.find(percentage => percentage.id === selectedPercentageId)!}
             students={filteredStudents}
             selectedGradingPeriod={selectedGradingPeriod}
             calculateGradingPeriodAverage={calculateGradingPeriodAverage}
@@ -267,18 +326,15 @@ export function ClassStudents({subject}:ClassStudentsProps) {
       </Dialog>
 
       <Dialog open={isPercentageDialogOpen} onOpenChange={setIsPercentageDialogOpen}>
-        <DialogContent className="sm:max-w-[425px]">
+        <DialogContent className="sm:max-w-[425px] bg-white">
           <DialogHeader>
-            <DialogTitle>Set Grade Percentages for {selectedGradingPeriod + 1}st Grading</DialogTitle>
+            <DialogTitle>Add New Grade Percentages</DialogTitle>
             <DialogDescription>
-              Enter the percentages for Performance Tasks, Written Works, and Quarterly Assessment. They must add up to 100%.
+              Enter the percentages for Performance Tasks, Written Works, and Quarterly Assessment. They must add up to
+              100%.
             </DialogDescription>
           </DialogHeader>
-          <GradePercentagesForm 
-            selectedGradingPeriod={selectedGradingPeriod}
-            percentages={percentages}
-            onUpdatePercentages={handleUpdatePercentages}
-          />
+          <GradePercentagesForm />
         </DialogContent>
       </Dialog>
     </div>

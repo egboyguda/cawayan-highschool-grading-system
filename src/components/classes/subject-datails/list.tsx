@@ -14,15 +14,24 @@ interface Grade {
   quarterlyAssess: number;
   performanceTask: number;
 }
+interface GradePercentage {
+
+  performanceTask: number
+  writtenWork: number
+  quarterlyAssessment: number
+}
 interface StudentListProps {
   students: Student[]
   selectedGradingPeriod: number
   onAddGrade: (studentId:string) => void
+  perCent: GradePercentage
+  
 
   calculateGradingPeriodAverage: (studentId: string, period: number) => number
 }
 
-export function StudentList({ students, selectedGradingPeriod, calculateGradingPeriodAverage ,onAddGrade}: StudentListProps) {
+
+export function StudentList({ students, selectedGradingPeriod, calculateGradingPeriodAverage ,onAddGrade,perCent}: StudentListProps) {
   if (students.length === 0) {
     return <p className="text-center text-gray-500 my-4">No students found.</p>
   }
@@ -32,9 +41,9 @@ export function StudentList({ students, selectedGradingPeriod, calculateGradingP
       <TableHeader>
         <TableRow>
           <TableHead className="text-blue-800">Name</TableHead>
-          <TableHead className="text-blue-800">Performance Task</TableHead>
-          <TableHead className="text-blue-800">Written Work</TableHead>
-          <TableHead className="text-blue-800">Quarterly Assessment</TableHead>
+          <TableHead className="text-blue-800">Performance Task  ({perCent.performanceTask})</TableHead>
+          <TableHead className="text-blue-800">Written Work ({perCent.writtenWork})</TableHead>
+          <TableHead className="text-blue-800">Quarterly Assessment ({perCent.quarterlyAssessment})</TableHead>
           <TableHead className="text-blue-800">Grade</TableHead>
           <TableHead className="text-blue-800">Action</TableHead>
         </TableRow>

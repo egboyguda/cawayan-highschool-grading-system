@@ -8,6 +8,7 @@ import { addStudent } from '@/action/subjectAction'
 interface addStudentProps{
   subjectId:string
 }
+
 export function AddStudentForm({subjectId}:addStudentProps) {
   const[formState,action,isPending] =useActionState(addStudent.bind(null,subjectId),{errors:{}})  
 
