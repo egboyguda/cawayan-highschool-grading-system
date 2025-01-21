@@ -334,7 +334,7 @@ export function ClassStudents({subject,gradePercentage}:ClassStudentsProps,
               100%.
             </DialogDescription>
           </DialogHeader>
-          <GradePercentagesForm onAddPercentage={handleAddGradePercentage} />
+          <GradePercentagesForm />
         </DialogContent>
       </Dialog>
     </div>

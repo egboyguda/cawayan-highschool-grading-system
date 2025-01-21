@@ -23,6 +23,8 @@ export const getAllGradesPercent = async () => {
         return renamedGrades;
        
     }catch(error){
+
+        console.error('Error fetching students:', error);
         return []
     }
 }

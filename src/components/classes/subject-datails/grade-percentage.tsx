@@ -4,11 +4,11 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { addGradePercent } from "@/action/addGradePercent"
 
-interface GradePercentagesFormProps {
-  onAddPercentage: (name: string, performanceTask: number, writtenWork: number, quarterlyAssessment: number) => void
-}
+// interface GradePercentagesFormProps {
+//   onAddPercentage: (name: string, performanceTask: number, writtenWork: number, quarterlyAssessment: number) => void
+// }
 
-export function GradePercentagesForm({ onAddPercentage }: GradePercentagesFormProps) {
+export function GradePercentagesForm() {
   const [formState,action,isPending]= useActionState(addGradePercent.bind(null),{errors:{}})
   const [name, setName] = useState("")
   const [performanceTask, setPerformanceTask] = useState(0)
