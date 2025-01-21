@@ -1,6 +1,7 @@
 'use server'
 import {z} from 'zod';
 import { db } from '@/db';
+import { revalidatePath } from 'next/cache';
 
 const gradePercentSchema =z.object({
     performanceTask: z.number({message:'Performance task must be a number.'}),
@@ -44,6 +45,7 @@ export async function addGradePercent(formState:gradePercentState,formData:FormD
 
             }
         })
+        revalidatePath('/subject/[id]/student');
     } catch (error) {
         if(error instanceof Error){
             return{

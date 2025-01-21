@@ -21,14 +21,14 @@ export function GradePercentagesForm({ onAddPercentage }: GradePercentagesFormPr
   }, [performanceTask, writtenWork, quarterlyAssessment])
 
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    if (performanceTask + writtenWork + quarterlyAssessment === 100) {
-      onAddPercentage(name, performanceTask, writtenWork, quarterlyAssessment)
-    } else {
-      alert("Percentages must add up to 100%")
-    }
-  }
+  // const handleSubmit = (e: React.FormEvent) => {
+  //   e.preventDefault()
+  //   if (performanceTask + writtenWork + quarterlyAssessment === 100) {
+  //     onAddPercentage(name, performanceTask, writtenWork, quarterlyAssessment)
+  //   } else {
+  //     alert("Percentages must add up to 100%")
+  //   }
+  // }
 
   return (
     <form action={action} className="space-y-4 ">

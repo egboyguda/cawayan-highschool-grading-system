@@ -71,22 +71,21 @@ interface SubjectWithStudent{
 }
 interface ClassStudentsProps{
   subject:SubjectWithStudent | null
+  gradePercentage:GradePercentage[]
 }
 
-export function ClassStudents({subject}:ClassStudentsProps) {
+export function ClassStudents({subject,gradePercentage}:ClassStudentsProps,
+) {
   
   const [students] = useState<Student[]>(subject?.students || []);
 
-  const [percentages, setPercentages] = useState([
+  const [percentages] = useState([
     { performanceTask: 40, writtenWork: 40, quarterlyAssessment: 20 },
     { performanceTask: 40, writtenWork: 40, quarterlyAssessment: 20 },
     { performanceTask: 40, writtenWork: 40, quarterlyAssessment: 20 },
     { performanceTask: 40, writtenWork: 40, quarterlyAssessment: 20 },
   ])
-  const [gradePercentages, setGradePercentages] = useState<GradePercentage[]>([
-    { id: "1", name: "Default", performanceTask: 40, writtenWork: 40, quarterlyAssessment: 20 },
-    { id: "2", name: "Alternative", performanceTask: 30, writtenWork: 50, quarterlyAssessment: 20 },
-  ])
+  const [gradePercentages, setGradePercentages] = useState<GradePercentage[]>(gradePercentage)
 
   const [selectedPercentageId, setSelectedPercentageId] = useState(gradePercentages[0].id)
 
