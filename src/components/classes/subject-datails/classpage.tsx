@@ -140,12 +140,12 @@ export function ClassStudents({subject}:ClassStudentsProps) {
   
 
 
-  const handleUpdatePercentages = (performanceTask: number, writtenWork: number, quarterlyAssessment: number) => {
-    const updatedPercentages = [...percentages]
-    updatedPercentages[selectedGradingPeriod] = { performanceTask, writtenWork, quarterlyAssessment }
-    setPercentages(updatedPercentages)
-    setIsPercentageDialogOpen(false)
-  }
+  // const handleUpdatePercentages = (performanceTask: number, writtenWork: number, quarterlyAssessment: number) => {
+  //   const updatedPercentages = [...percentages]
+  //   updatedPercentages[selectedGradingPeriod] = { performanceTask, writtenWork, quarterlyAssessment }
+  //   setPercentages(updatedPercentages)
+  //   setIsPercentageDialogOpen(false)
+  // }
 
   const calculateGradingPeriodAverage = (studentId: string, period: number) => {
     const student = students.find(s => s.id === studentId)
@@ -201,6 +201,7 @@ export function ClassStudents({subject}:ClassStudentsProps) {
                 setIsPercentageDialogOpen(true)
               } else {
                 setSelectedPercentageId(value)
+                setGradePercentages(gradePercentages.filter(percentage => percentage.id === value))
               }
             }}
           >
@@ -238,7 +239,8 @@ export function ClassStudents({subject}:ClassStudentsProps) {
           <CardTitle className="text-blue-900">Student List - {selectedGradingPeriod + 1}st Grading</CardTitle>
         </CardHeader>
         <CardContent>
-          <StudentList 
+          <StudentList
+            perCent={gradePercentages.find(percentage => percentage.id === selectedPercentageId)!}
             students={filteredStudents}
             selectedGradingPeriod={selectedGradingPeriod}
             calculateGradingPeriodAverage={calculateGradingPeriodAverage}
@@ -325,7 +327,7 @@ export function ClassStudents({subject}:ClassStudentsProps) {
       </Dialog>
 
       <Dialog open={isPercentageDialogOpen} onOpenChange={setIsPercentageDialogOpen}>
-        <DialogContent className="sm:max-w-[425px]">
+        <DialogContent className="sm:max-w-[425px] bg-white">
           <DialogHeader>
             <DialogTitle>Add New Grade Percentages</DialogTitle>
             <DialogDescription>
