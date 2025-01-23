@@ -1,19 +1,21 @@
-import Link from 'next/link'
+"use client"
+
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
 interface Student {
   id: string
+  studentId:string
   name: string
-  studentId: string
 }
 
-interface StudentListProps {
+interface StudentGradeListProps {
   students: Student[]
+  onViewGrades: (studentId: string) => void
 }
 
-const StudentList = ({ students }: StudentListProps) => {
+export function StudentGradeList({ students, onViewGrades }: StudentGradeListProps) {
   return (
     <Card className="bg-white">
       <CardHeader>
@@ -23,20 +25,18 @@ const StudentList = ({ students }: StudentListProps) => {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead className="text-blue-800">LRN</TableHead>
               <TableHead className="text-blue-800">Name</TableHead>
-              <TableHead className="text-blue-800">Actions</TableHead>
+              <TableHead className="text-blue-800">Action</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {students && students.map((student) => (
+            {students.map((student) => (
               <TableRow key={student.id}>
-                <TableCell className="font-medium">{student.studentId}</TableCell>
-                <TableCell>{student.name}</TableCell>
+                <TableCell className="font-medium">{student.name}</TableCell>
                 <TableCell>
-                  <Link href={`/students/${student.id}/grading`}>
-                    <Button variant="outline" size="sm">View Grades</Button>
-                  </Link>
+                  <Button variant="outline" size="sm" onClick={() => onViewGrades(student.id)}>
+                    View Grades
+                  </Button>
                 </TableCell>
               </TableRow>
             ))}
@@ -47,5 +47,3 @@ const StudentList = ({ students }: StudentListProps) => {
   )
 }
 
-// Export the StudentList component using the default export syntax
-export default StudentList
