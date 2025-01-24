@@ -34,38 +34,40 @@ export default function StudentGradeSummary({ studentId, name, gradesData }: Stu
     return (sum / grades.length).toFixed(2)
   }
   const generatePDF = () => {
-    const doc = new jsPDF('landscape'); // Set orientation to landscape
+    const doc = new jsPDF('landscape', 'mm', 'legal'); // Landscape orientation with legal size
   
-    // Add Title
+    // Adjusted column width (40% of total page width)
+    const totalWidth = doc.internal.pageSize.getWidth();
+    const columnWidth = (totalWidth * 0.4); // 40% of page width
+    const columnGap = totalWidth * 0.1; // 10% gap between columns
+  
+    // LEFT COLUMN: Learning Progress and Achievement
     doc.setFont('helvetica', 'bold');
-    doc.setFontSize(18);
-    doc.text('Report on Learning Progress and Achievement', 148, 15, { align: 'center' }); // Centered title
+    doc.setFontSize(12); // Smaller font size for titles
+    doc.text('Report on Learning Progress and Achievement', columnWidth / 2, 10, { align: 'center' });
   
-    // Prepare Table Data
+    // Grades Table
     const tableData = Object.entries(grades).map(([subject, gradesList]) => [
-      subject, // Learning Areas
-      gradesList[0] || '-', // Quarter 1
-      gradesList[1] || '-', // Quarter 2
-      gradesList[2] || '-', // Quarter 3
-      gradesList[3] || '-', // Quarter 4
-      calculateAverage(gradesList), // Final Rating
-      parseFloat(calculateAverage(gradesList)) >= 75 ? 'Passed' : 'Failed', // Remarks
+      subject,
+      gradesList[0] || '-',
+      gradesList[1] || '-',
+      gradesList[2] || '-',
+      gradesList[3] || '-',
+      calculateAverage(gradesList),
+      parseFloat(calculateAverage(gradesList)) >= 75 ? 'Passed' : 'Failed',
     ]);
   
-    // Calculate General Average
-    const generalAverage = calculateAverage(Object.values(grades).flatMap(g => g));
-  
-    // Add General Average Row
+    const generalAverage = calculateAverage(Object.values(grades).flatMap((g) => g));
     tableData.push([
-      '', // Blank for "Learning Areas"
-      { content: 'General Average', colSpan: 4, styles: { halign: 'center', fontStyle: 'bold' } }, // Merged across all Quarter columns
-      generalAverage, // Final Rating column: General Average
-      '', // Remarks (empty)
+      '',
+      { content: 'General Average', colSpan: 4, styles: { halign: 'center', fontStyle: 'bold' } },
+      generalAverage,
+      '',
     ]);
   
-    // Add Table with Headers and Sub-Headers
     autoTable(doc, {
-      startY: 30,
+      startY: 20,
+      margin: { left: 10, right: columnGap + columnWidth + 10 },
       head: [
         [
           { content: 'Learning Areas', rowSpan: 2, styles: { halign: 'center', valign: 'middle' } },
@@ -73,39 +75,40 @@ export default function StudentGradeSummary({ studentId, name, gradesData }: Stu
           { content: 'Final Rating', rowSpan: 2, styles: { halign: 'center', valign: 'middle' } },
           { content: 'Remarks', rowSpan: 2, styles: { halign: 'center', valign: 'middle' } },
         ],
-        ['1', '2', '3', '4'], // Sub-headers for Quarter
+        ['1', '2', '3', '4'],
       ],
       body: tableData.map((row) =>
         row.map((cell) =>
           typeof cell === 'object' ? cell : { content: cell || '-', styles: { halign: 'center' } }
         )
       ),
-      theme: 'grid', // Grid theme to ensure borders
+      theme: 'grid',
       headStyles: {
-        fillColor: [255, 255, 255], // White background
-        textColor: 0, // Black text
-        lineWidth: 0.5, // Black border width for headers
+        fillColor: [255, 255, 255],
+        textColor: 0,
+        lineWidth: 0.5,
       },
       styles: {
         halign: 'center',
         valign: 'middle',
-        textColor: 0, // Black text for all cells
-        lineWidth: 0.5, // Add thin black borders around cells
+        textColor: 0,
+        lineWidth: 0.5,
       },
       columnStyles: {
-        0: { halign: 'left' }, // Align "Learning Areas" to the left
+        0: { halign: 'left' },
       },
     });
   
-    // Add Descriptors Table Below (without borders and resized columns)
-    const finalY = doc.lastAutoTable.finalY + 10; // Position below the table
+    // Descriptors Table
+    const descriptorsY = doc.lastAutoTable.finalY + 10;
     autoTable(doc, {
-      startY: finalY,
+      startY: descriptorsY,
+      margin: { left: 10, right: columnGap + columnWidth + 10 },
       head: [
         [
-          { content: 'Descriptors', styles: { halign: 'center', fontStyle: 'bold', cellWidth: 'auto' } },
-          { content: 'Grading Scale', styles: { halign: 'center', fontStyle: 'bold', cellWidth: 'auto' } },
-          { content: 'Remarks', styles: { halign: 'center', fontStyle: 'bold', cellWidth: 'auto' } },
+          { content: 'Descriptors', styles: { halign: 'center', fontStyle: 'bold' } },
+          { content: 'Grading Scale', styles: { halign: 'center', fontStyle: 'bold' } },
+          { content: 'Remarks', styles: { halign: 'center', fontStyle: 'bold' } },
         ],
       ],
       body: [
@@ -115,26 +118,151 @@ export default function StudentGradeSummary({ studentId, name, gradesData }: Stu
         ['Fairly Satisfactory', '75-79', 'Passed'],
         ['Did Not Meet Expectations', 'Below 75', 'Failed'],
       ],
-      theme: 'plain', // No grid for this table
+      theme: 'plain',
       headStyles: {
-        textColor: 0, // Black text for headers
+        textColor: 0,
       },
       styles: {
         halign: 'center',
         valign: 'middle',
-        textColor: 0, // Black text for all cells
-        lineWidth: 0, // Remove borders for this table
+        textColor: 0,
+        lineWidth: 0,
       },
       columnStyles: {
-        0: { cellWidth: 40 }, // Descriptors column width
-        1: { cellWidth: 40 }, // Grading Scale column width
-        2: { cellWidth: 40 }, // Remarks column width
+        0: { cellWidth: columnWidth / 3 },
+        1: { cellWidth: columnWidth / 3 },
+        2: { cellWidth: columnWidth / 3 },
+      },
+    });
+  
+    // RIGHT COLUMN: Learner's Observed Values
+    const valuesStartY = 10;
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(12); // Smaller font size for titles
+    doc.text("Report on Learner's Observed Values", columnWidth + columnGap + columnWidth / 2, valuesStartY, { align: 'center' });
+  
+    const observedValues = [
+      [
+        { content: 'Core Values', rowSpan: 2, styles: { halign: 'center', valign: 'middle' } },
+        { content: 'Behavior Statements', rowSpan: 2, styles: { halign: 'center', valign: 'middle' } },
+        { content: 'Quarter', colSpan: 4, styles: { halign: 'center', valign: 'middle' } },
+      ],
+      ['1', '2', '3', '4'],
+    ];
+  
+    const observedValuesBody = [
+      [
+        '1. Maka-Diyos',
+        "Expresses one’s spiritual beliefs while respecting the spiritual beliefs of others.",
+        '',
+        '',
+        '',
+        '',
+      ],
+      [
+        '',
+        'Shows adherence to ethical principles by upholding truth in all undertakings.',
+        '',
+        '',
+        '',
+        '',
+      ],
+      [
+        '2. Makatao',
+        'Is sensitive to individual, social, and cultural differences;',
+        '',
+        '',
+        '',
+        '',
+      ],
+      [
+        '',
+        'Demonstrates contributions towards solidarity.',
+        '',
+        '',
+        '',
+        '',
+      ],
+      [
+        '3. Maka-Kalikasan',
+        'Cares for the environment and utilizes resources wisely, judiciously, and economically.',
+        '',
+        '',
+        '',
+        '',
+      ],
+      [
+        '4. Maka-Bansa',
+        'Demonstrates pride in being a Filipino; exercises the rights and responsibilities of a Filipino citizen.',
+        '',
+        '',
+        '',
+        '',
+      ],
+      [
+        '',
+        'Demonstrates appropriate behavior in carrying out activities in school, community, and country.',
+        '',
+        '',
+        '',
+        '',
+      ],
+    ];
+  
+    autoTable(doc, {
+      startY: valuesStartY + 10,
+      margin: { left: columnWidth + columnGap, right: 10 },
+      head: observedValues,
+      body: observedValuesBody,
+      theme: 'grid',
+      headStyles: {
+        fillColor: [255, 255, 255],
+        textColor: 0,
+        lineWidth: 0.5,
+      },
+      styles: {
+        halign: 'center',
+        valign: 'middle',
+        textColor: 0,
+        lineWidth: 0.5,
+      },
+      columnStyles: {
+        0: { cellWidth: columnWidth / 5 },
+        1: { cellWidth: columnWidth / 2 },
+        2: { cellWidth: columnWidth / 10 },
+        3: { cellWidth: columnWidth / 10 },
+        4: { cellWidth: columnWidth / 10 },
+        5: { cellWidth: columnWidth / 10 },
+      },
+    });
+  
+    // Non-Numerical Ratings Table
+    const ratingsStartY = doc.lastAutoTable.finalY + 10;
+    autoTable(doc, {
+      startY: ratingsStartY,
+      margin: { left: columnWidth + columnGap, right: 10 },
+      head: [],
+      body: [
+        ['Marking', 'Non-Numerical Rating'],
+        ['AO', 'Always Observed'],
+        ['SO', 'Sometimes Observed'],
+        ['RO', 'Rarely Observed'],
+        ['NO', 'Not Observed'],
+      ],
+      theme: 'plain',
+      styles: {
+        halign: 'left',
+        textColor: 0,
+        lineWidth: 0,
       },
     });
   
     // Save the PDF
-    doc.save(`${name}_Learning_Progress_Report_${schoolYear}.pdf`);
+    doc.save(`${name}_Learning_Progress_and_Observed_Values_${schoolYear}.pdf`);
   };
+  
+  
+  
   
   
   return (
