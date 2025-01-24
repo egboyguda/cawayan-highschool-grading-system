@@ -55,6 +55,7 @@ export async function findSubjectsAndGrades(studentId: string) {
         },
       });
   
+      console.log(grades)
       // Transform the data into the desired format
       const result: Record<string, Record<string, number[]>> = {};
   

@@ -37,6 +37,8 @@ model Student {
   subjects    Subject[]   @relation("StudentSubjects")
   grades      Grade[]     // One-to-many relationship with Grade
   year_level  String      @default("7")
+  gender      String?
+  age         String?
 }
 
 model Teacher {

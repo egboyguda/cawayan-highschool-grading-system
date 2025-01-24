@@ -1,5 +1,6 @@
 import { db } from "@/db";
 import { verifySession } from "@/lib/dal";
+import { revalidatePath } from "next/cache";
 
 
 interface Subject{
@@ -96,13 +97,16 @@ export const getSubject = async (id: string): Promise<SubjectWithStudent | null>
                         firstName: true,
                         lastName: true,
                         grades: {
+                            where:{
+                                subjectId: id
+                            },
                             select: {
                                 id: true,
-                               gradingPeriod: true,
-                               writtenWork: true,
-                                quarterlyAssessment: true,
-                             performanceTask: true,
-
+                                gradingPeriod: true,
+                                writtenWork: true,
+                                 quarterlyAssessment: true,
+                              performanceTask: true,
+ 
                             },
                         },
                     },
@@ -113,7 +117,7 @@ export const getSubject = async (id: string): Promise<SubjectWithStudent | null>
         if (!subject) {
             return null;
         }
-
+       // revalidatePath('/subject/[id]/student')
         return {
             id: subject.id,
             name: subject.name,
