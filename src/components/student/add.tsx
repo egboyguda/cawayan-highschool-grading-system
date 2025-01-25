@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/dialog"
 import { addStudentAction } from "@/action/studentAction"
 import { useActionState } from "react"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select"
 
 
 
@@ -51,6 +52,13 @@ const AddStudentForm = () => {
               id="middle_name"
             name='middle_name'
             />
+            {
+              formState.errors.middle_name && (
+                <p className="text-red-500 text-sm mt-2">
+                  {formState.errors.middle_name}
+                </p>
+              )
+            }
           </div>
           <div className="space-y-2">
             <Label htmlFor="last_name">Last Name</Label>
@@ -59,8 +67,50 @@ const AddStudentForm = () => {
               name='last_name'
                 required
             />
+            {
+              formState.errors.last_name && (
+                <p className="text-red-500 text-sm mt-2">
+                  {formState.errors.last_name}
+                </p>
+              )
+            }
           </div>
-          <Button type="submit" className='border border-black'>{isPending?'Saving...':'Save'}</Button>
+          <div className="space-y-2">
+            <Label htmlFor="gender">Gender</Label>
+            <Select  name='gender' required>
+              <SelectTrigger>
+                <SelectValue placeholder="Select gender" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="male">Male</SelectItem>
+                <SelectItem value="female">Female</SelectItem>
+                
+              </SelectContent>
+            </Select>
+            {
+              formState.errors.gender && (
+                <p className="text-red-500 text-sm mt-2">
+                  {formState.errors.gender}
+                </p>
+              )}
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="birthdate">Birthdate</Label>
+            <Input
+              id="birthdate"
+              type="date"
+              name='birthdate'
+              required
+            />
+            {
+              formState.errors.birthdate && (
+                <p className="text-red-500 text-sm mt-2">
+                  {formState.errors.birthdate}
+                </p>
+              )
+            }
+          </div>
+          <Button type="submit" className='border  border-black'>{isPending?'Saving...':'Save'}</Button>
         </form>
       </DialogContent>
     </Dialog>

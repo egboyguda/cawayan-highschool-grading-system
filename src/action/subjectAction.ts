@@ -1,6 +1,7 @@
 'use server';
 
 import { db } from '@/db';
+import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
 
 const subjectSchema = z.object({
@@ -65,6 +66,7 @@ export async function addSubjectAction(formState: SubjectState, formData: FormDa
                 school_year: result.data.school_year,
             },
         });
+        revalidatePath('/subject')
     } catch (error) {
         if (error instanceof Error) {
             
@@ -129,6 +131,7 @@ export async function addStudent(
                 }
             }
         })
+        revalidatePath('/subject/[id]/student')
        
     } catch (error) {
       if(error instanceof Error){

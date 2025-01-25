@@ -9,7 +9,7 @@ export default async function Page({ params }: { params: Promise<{id:string,scho
 
     return (
         <div>
-            <StudentGradeSummary studentId={id} name={grade?.name || ''} gradesData={grade?.gradesData || {}}/>
+            <StudentGradeSummary studentId={id} name={grade?.name || ''} gradesData={grade?.gradesData || {}} lrn={grade?.lrn || '' } year_level={grade.year_level ||""}/>
         </div>
     );
 }

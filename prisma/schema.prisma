@@ -38,7 +38,7 @@ model Student {
   grades      Grade[]     // One-to-many relationship with Grade
   year_level  String      @default("7")
   gender      String?
-  age         String?
+  birthdata   DateTime?
 }
 
 model Teacher {

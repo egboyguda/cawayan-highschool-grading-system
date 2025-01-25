@@ -10,11 +10,13 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 
 interface StudentGradeSummaryProps {
   studentId: string
+  lrn: string
   name: string
+  year_level:string
   gradesData: Record<string, Record<string, number[]>>
 }
 
-export default function StudentGradeSummary({ studentId, name, gradesData }: StudentGradeSummaryProps) {
+export default function StudentGradeSummary({ studentId, name, gradesData,lrn,year_level }: StudentGradeSummaryProps) {
   const searchParams = useSearchParams()
   const schoolYear = searchParams.get('schoolYear')
   const [grades, setGrades] = useState<Record<string, number[]>>({})
@@ -30,6 +32,7 @@ export default function StudentGradeSummary({ studentId, name, gradesData }: Stu
   }
 
   const calculateAverage = (grades: number[]) => {
+    console.log(grades)
     const sum = grades.reduce((a, b) => a + b, 0)
     return (sum / grades.length).toFixed(2)
   }
@@ -394,6 +397,9 @@ doc.setFont('helvetica');
 doc.setFontSize(8); // Increased font size for main headings
 doc.text('SF 9 - JHS',  secondColumnX-40, secondColumnStartY,);
 
+doc.addImage('/Picture2.jpg', secondColumnX -40, secondColumnStartY, 30, 40,);
+doc.addImage('/Picture1.png', secondColumnX + 65, secondColumnStartY, 30, 40,);
+
 const secondColumnDetailsY = secondColumnStartY + 10;
 doc.setFontSize(12); // Slightly smaller font size for subheadings
 doc.text('Republic of the Philippines', secondColumnX + columnWidth / 4, secondColumnDetailsY, { align: 'center'});
@@ -443,14 +449,14 @@ doc.text("LEARNER'S PROGRESS REPORT CARD",secondColumnX+columnWidth/4,schoolLear
  doc.text(`Name: ${name.toUpperCase()}`,secondColumnX-40,studnetNamey)
 
  const studentIdY = studnetNamey+8
- doc.text(`Learner's Refereance Number: ${studentId}`,secondColumnX-40,studentIdY)
+ doc.text(`Learner's Refereance Number: ${lrn}`,secondColumnX-40,studentIdY)
 
  const ageY = studentIdY+8
  doc.text(`Age: 24`,secondColumnX-40,ageY)
  doc.text(`Sex: Male`,secondColumnX+15,ageY)
 
 const gradey = ageY+8
-doc.text(`Grade: `,secondColumnX-40,gradey)
+doc.text(`Grade: ${year_level}`,secondColumnX-40,gradey)
 doc.text(`Section: `,secondColumnX+15,gradey)
 
 const nameSchoolY = gradey+8
@@ -486,7 +492,7 @@ doc.text('Teacher',secondColumnX+35,lab)
 
 
       // Save the PDF
-      doc.save(`${name}_Attendance_Records_${schoolYear}.pdf`);
+      doc.save(`${name}_CARD_${schoolYear}.pdf`);
       
   };
 
@@ -515,6 +521,7 @@ doc.text('Teacher',secondColumnX+35,lab)
             </TableHeader>
             <TableBody>
               {Object.entries(grades).map(([subject, gradesList]) => (
+                
                 <TableRow key={subject}>
                   <TableCell className="font-medium">{subject}</TableCell>
                   {gradesList.map((grade, index) => (

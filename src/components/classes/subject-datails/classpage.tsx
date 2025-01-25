@@ -87,8 +87,7 @@ export function ClassStudents({subject,gradePercentage}:ClassStudentsProps,
   ])
   const [gradePercentages, setGradePercentages] = useState<GradePercentage[]>(gradePercentage)
 
-  const [selectedPercentageId, setSelectedPercentageId] = useState(gradePercentages[0].id)
-
+  const [selectedPercentageId, setSelectedPercentageId] = useState(gradePercentages[0].id  )
 
   const [selectedGradingPeriod, setSelectedGradingPeriod] = useState(0)
   const [selectedStudent, setSelectedStudent] = useState<Student | null>(null)
@@ -183,7 +182,7 @@ export function ClassStudents({subject,gradePercentage}:ClassStudentsProps,
             <SelectTrigger className="w-full">
               <SelectValue placeholder="Select grading period" />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className='bg-white'>
               <SelectItem value="0">1st Grading</SelectItem>
               <SelectItem value="1">2nd Grading</SelectItem>
               <SelectItem value="2">3rd Grading</SelectItem>
@@ -207,7 +206,7 @@ export function ClassStudents({subject,gradePercentage}:ClassStudentsProps,
             <SelectTrigger className="w-full">
               <SelectValue placeholder="Select grade percentage" />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className='bg-white'>
               {gradePercentages.map((percentage) => (
                 <SelectItem key={percentage.id} value={percentage.id}>
                   {formatGradePercentage(percentage)}
@@ -242,7 +241,7 @@ export function ClassStudents({subject,gradePercentage}:ClassStudentsProps,
             perCent={gradePercentages.find(percentage => percentage.id === selectedPercentageId)!}
             students={filteredStudents}
             selectedGradingPeriod={selectedGradingPeriod}
-            calculateGradingPeriodAverage={calculateGradingPeriodAverage}
+           
             onAddGrade={handleAddGrade}
           />
         </CardContent>
@@ -267,7 +266,7 @@ export function ClassStudents({subject,gradePercentage}:ClassStudentsProps,
             <SelectTrigger className="w-[180px]">
               <SelectValue placeholder="Select grading period" />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className='bg-white'>
               <SelectItem value="1">1st Grading</SelectItem>
               <SelectItem value="2">2nd Grading</SelectItem>
               <SelectItem value="3">3rd Grading</SelectItem>
@@ -286,7 +285,7 @@ export function ClassStudents({subject,gradePercentage}:ClassStudentsProps,
                 <SelectTrigger>
                   <SelectValue placeholder="Select grade type" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className='bg-white'>
                   <SelectItem value="performanceTask">Performance Task</SelectItem>
                   <SelectItem value="writtenWork">Written Work</SelectItem>
                   <SelectItem value="quarterlyAssessment">Quarterly Assessment</SelectItem>

@@ -24,13 +24,10 @@ export default async function Dashboard() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <StatCard title="Total Students" value={studentCount|| 0} icon={Users} />
         <StatCard title="Total Teachers" value={teachers || 0} icon={GraduationCap} />
-        {stats.map((stat, index) => (
-          <StatCard key={index} {...stat} />
-        ))}
+       
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <StudentEnrollmentChart />
-        <QuickLinks />
+        
       </div>
     </div>
   )

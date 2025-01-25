@@ -31,7 +31,7 @@ export function GradeSearchForm({ onSearch }: GradeSearchFormProps) {
               <SelectTrigger className="w-[180px]">
                 <SelectValue placeholder="Select year" />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="bg-white">
                 <SelectItem value="2023">2022-2023</SelectItem>
                 <SelectItem value="2024">2023-2024</SelectItem>
                 <SelectItem value="2025">2024-2025</SelectItem>

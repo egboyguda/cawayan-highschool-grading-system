@@ -30,6 +30,7 @@ export default async function RootLayout({
          <AppSidebar  />
          <SidebarInset>
            <main className="flex-1 p-8 overflow-auto ">
+           <div className="watermark"></div>
              <SidebarTrigger  className="mb-4 sidebar-trigger"/>
              {children}
            </main>
