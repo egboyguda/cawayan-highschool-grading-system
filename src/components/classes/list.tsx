@@ -75,4 +75,3 @@ const ClassList: React.FC<ClassListProps> = ({ initialClasses, searchTerm }) => 
 }
 
 export default ClassList
-

@@ -68,4 +68,3 @@ export default function Classes( {initialClasses}: ClassListProps) {
     </div>
   )
 }
-

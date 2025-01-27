@@ -37,51 +37,65 @@ export async function addTeacherAction(formState: TeacherState, formData: FormDa
         major: formData.get('major'),
         password: formData.get('password'),
         password1: formData.get('password1'),
-    })
+    });
+
     if (!result.success) {
         return {
             errors: result.error.flatten().fieldErrors,
         };
     }
+
     if (result.data.password !== result.data.password1) {
         return {
             errors: {
                 password1: ['Password does not match'],
-            }
-        }
+            },
+        };
     }
+
     try {
-    const year = new Date().getFullYear().toString(); // Get the current year as a string
-    const teacherCount = await db.teacher.count({
-        where: {
-          teacherId: {
-            startsWith: year, // Filter for teachers starting with the year
-          },
-        },
-      });
-    
-      const uniqueSuffix = (teacherCount + 1).toString().padStart(4, '0'); // Ensure 4-digit suffix
-      const teacherId = `T${year}${uniqueSuffix}`;
-     const teacher=   await db.teacher.create({
+        const year = new Date().getFullYear().toString(); // Get the current year as a string
+        let teacherCount = await db.teacher.count({
+            where: {
+                teacherId: {
+                    startsWith: year, // Filter for teachers starting with the year
+                },
+            },
+        });
+
+        const generateTeacherId = () => {
+            const uniqueSuffix = (teacherCount + 2).toString().padStart(4, '0'); // Ensure 4-digit suffix
+            return `T${year}${uniqueSuffix}`;
+        };
+
+        let teacherId = generateTeacherId();
+        
+        // Ensure that the teacherId is unique
+        while (await db.teacher.findUnique({ where: { teacherId } })) {
+            teacherCount++;
+            teacherId = generateTeacherId();
+        }
+
+        const teacher = await db.teacher.create({
             data: {
                 name: result.data.name,
                 licenseNum: result.data.licenseNumber,
                 rank: result.data.rank,
                 major: result.data.major,
-                teacherId:teacherId
-                
-            }
-        }) 
+                teacherId: teacherId,
+            },
+        });
 
-         await db.user.create({
+        await db.user.create({
             data: {
                 username: result.data.username,
                 password: result.data.password,
                 teacherId: teacher.id,
-            }
-        })
-        revalidatePath('/teachers')
-        revalidatePath('/')
+            },
+        });
+
+        revalidatePath('/teachers');
+        revalidatePath('/');
 
     } catch (error) {
         if (error instanceof Error) {
@@ -92,5 +106,6 @@ export async function addTeacherAction(formState: TeacherState, formData: FormDa
             };
         }
     }
+
     return { errors: {} };
 }

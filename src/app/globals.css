@@ -21,7 +21,14 @@
 }
 
 .sidebar[data-state="collapsed"] .sidebar-header h1 {
-  display: none;
+  width: 0;
+  opacity: 0;
+}
+
+.sidebar .sidebar-header h1 {
+  width: auto;
+  opacity: 1;
+  white-space: nowrap;
 }
 
 .sidebar-content {
@@ -38,5 +45,29 @@
 
 .sidebar-trigger {
   @apply bg-blue-700 text-white hover:bg-blue-600 transition-colors;
+}
+
+.sidebar-menu-button a {
+  @apply flex items-center space-x-2 py-2 px-4 rounded-md transition-colors duration-200;
+}
+
+.sidebar-menu-button a:hover {
+  @apply bg-blue-50 text-blue-700;
+}
+
+.watermark {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80vw;
+  height: 80vh;
+  background-image: url("/Picture1.png?height=600&width=600");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  opacity: 0.1;
+  pointer-events: none;
+  z-index: -1;
 }
 

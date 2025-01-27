@@ -2,6 +2,7 @@
 import { z } from 'zod';
 import { db } from '@/db';
 import { revalidatePath } from 'next/cache';
+import { redirect } from 'next/navigation';
 
 const gradeSchema = z.object({
     grade: z.number({ message: 'Grade must be a number.' }),
@@ -59,8 +60,9 @@ export async function addGrade(
                 [type]: grade,
             },
         });
-        revalidatePath('/subject/[id]/student');
-        return { errors: {} }; // Return empty errors on success
+        revalidatePath(`/subject/${subjectId}/student`);
+
+         // Return empty errors on success
     } catch (error) {
         console.error('Error while adding grade:', error);
         if (error instanceof Error) {
@@ -78,4 +80,6 @@ export async function addGrade(
             },
         };
     }
+    redirect(`/subject/${subjectId}/student`);
+    return{errors:{}}
 }

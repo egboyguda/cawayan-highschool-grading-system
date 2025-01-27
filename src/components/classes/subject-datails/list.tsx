@@ -27,11 +27,11 @@ interface StudentListProps {
   perCent: GradePercentage
   
 
-  calculateGradingPeriodAverage: (studentId: string, period: number) => number
+  //calculateGradingPeriodAverage: (studentId: string, period: number) => number
 }
 
 
-export function StudentList({ students, selectedGradingPeriod, calculateGradingPeriodAverage ,onAddGrade,perCent}: StudentListProps) {
+export function StudentList({ students, selectedGradingPeriod ,onAddGrade,perCent}: StudentListProps) {
   if (students.length === 0) {
     return <p className="text-center text-gray-500 my-4">No students found.</p>
   }
@@ -56,8 +56,10 @@ export function StudentList({ students, selectedGradingPeriod, calculateGradingP
             <TableCell>{student.grades.map(e=>e.gradingPeriod ===selectedGradingPeriod+1 && e.writtenWork)}</TableCell>
             <TableCell>{student.grades.map(e=>e.gradingPeriod ===selectedGradingPeriod+1 && e.quarterlyAssess)}</TableCell>
             <TableCell>
-              {calculateGradingPeriodAverage(student.id, selectedGradingPeriod).toFixed(2)}
-            </TableCell>
+  {student.grades
+    .filter(e => e.gradingPeriod === selectedGradingPeriod + 1)
+    .reduce((total, e) => total + e.performanceTask + e.writtenWork + e.quarterlyAssess, 0)}
+</TableCell>
             <TableCell>
               <Button 
                 variant="outline" 
