@@ -78,7 +78,7 @@ interface ClassesProps{
 }
 
 export default function Classes({initialClasses}:ClassesProps){ {
-  const [classes, setClasses] = useState(initialClasses)
+  const [classes] = useState(initialClasses)
   const [searchTerm, setSearchTerm] = useState("")
   const [yearFilter, setYearFilter] = useState("")
   const [gradeYearFilter, setGradeYearFilter] = useState("")
@@ -110,7 +110,7 @@ export default function Classes({initialClasses}:ClassesProps){ {
             <DialogHeader>
               <DialogTitle>Add New Class</DialogTitle>
               <DialogDescription>
-                Enter the details of the new class here. Click save when you're done.
+                Enter the details of the new class here. Click save when you&apos;re done.
               </DialogDescription>
             </DialogHeader>
             <AddClassForm />

@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { useParams, useSearchParams } from 'next/navigation'
+import {  useSearchParams } from 'next/navigation'
 import { jsPDF } from 'jspdf'
 import autoTable from 'jspdf-autotable'
 
@@ -16,7 +16,7 @@ interface StudentGradeSummaryProps {
   gradesData: Record<string, Record<string, number[]>>
 }
 
-export default function StudentGradeSummary({ studentId, name, gradesData,lrn,year_level }: StudentGradeSummaryProps) {
+export default function StudentGradeSummary({ name, gradesData,lrn,year_level }: StudentGradeSummaryProps) {
   const searchParams = useSearchParams()
   const schoolYear = searchParams.get('schoolYear')
   const [grades, setGrades] = useState<Record<string, number[]>>({})
@@ -25,7 +25,7 @@ export default function StudentGradeSummary({ studentId, name, gradesData,lrn,ye
     if (schoolYear) {
       setGrades(gradesData?.[schoolYear] || {})
     }
-  }, [schoolYear])
+  }, [schoolYear,gradesData])
 
   if (!schoolYear) {
     return <div>Loading...</div>
@@ -63,7 +63,8 @@ export default function StudentGradeSummary({ studentId, name, gradesData,lrn,ye
       const generalAverage = calculateAverage(Object.values(grades).flatMap((g) => g));
       tableData.push([
         '',
-        { content: 'General Average', colSpan: 4, styles: { halign: 'center', fontStyle: 'bold' } },
+        /* eslint-disable @typescript-eslint/no-explicit-any */
+        { content: 'General Average', colSpan: 4, styles: { halign: 'center', fontStyle: 'bold' } } as any,
         generalAverage,
         '',
       ]);
@@ -103,7 +104,8 @@ export default function StudentGradeSummary({ studentId, name, gradesData,lrn,ye
       });
 
       // Descriptors Table
-      const descriptorsY = doc.lastAutoTable.finalY + 10;
+      /* eslint-disable @typescript-eslint/no-explicit-any */
+      const descriptorsY = (doc as any).lastAutoTable.finalY + 10;
       autoTable(doc, {
         startY: descriptorsY,
         margin: { left: 10, right: columnGap + columnWidth + 10 },
@@ -144,11 +146,12 @@ export default function StudentGradeSummary({ studentId, name, gradesData,lrn,ye
       doc.setFontSize(12); // Smaller font size for titles
       doc.text("Report on Learner's Observed Values", columnWidth + columnGap + columnWidth / 2, valuesStartY, { align: 'center' });
 
+      /* eslint-disable @typescript-eslint/no-explicit-any */
       const observedValues = [
         [
-          { content: 'Core Values', rowSpan: 2, styles: { halign: 'center', valign: 'middle' } },
-          { content: 'Behavior Statements', rowSpan: 2, styles: { halign: 'center', valign: 'middle' } },
-          { content: 'Quarter', colSpan: 4, styles: { halign: 'center', valign: 'middle' } },
+          { content: 'Core Values', rowSpan: 2, styles: { halign: 'center' as any, valign: 'middle' as any } },
+          { content: 'Behavior Statements', rowSpan: 2, styles: { halign: 'center' as any, valign: 'middle' as any } },
+          { content: 'Quarter', colSpan: 4, styles: { halign: 'center' as any, valign: 'middle' as any } },
         ],
         ['1', '2', '3', '4'],
       ];
@@ -240,7 +243,8 @@ export default function StudentGradeSummary({ studentId, name, gradesData,lrn,ye
       });
 
       // Non-Numerical Ratings Table
-      const ratingsStartY = doc.lastAutoTable.finalY + 10;
+      /* eslint-disable @typescript-eslint/no-explicit-any */
+      const ratingsStartY = (doc as any).lastAutoTable.finalY + 10;
       autoTable(doc, {
         startY: ratingsStartY,
         margin: { left: columnWidth + columnGap, right: 10 },
@@ -315,7 +319,8 @@ export default function StudentGradeSummary({ studentId, name, gradesData,lrn,ye
       });
       
   // Add Parent/Guardian's Signature section after the attendance record
-  const signatureStartY = doc.lastAutoTable.finalY + 10;
+  
+  const signatureStartY = (doc as any).lastAutoTable.finalY + 10;
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(8); // Adjust font size for the signature part
 

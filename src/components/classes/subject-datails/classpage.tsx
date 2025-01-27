@@ -79,12 +79,12 @@ export function ClassStudents({subject,gradePercentage}:ClassStudentsProps,
   
   const [students] = useState<Student[]>(subject?.students || []);
 
-  const [percentages] = useState([
-    { performanceTask: 40, writtenWork: 40, quarterlyAssessment: 20 },
-    { performanceTask: 40, writtenWork: 40, quarterlyAssessment: 20 },
-    { performanceTask: 40, writtenWork: 40, quarterlyAssessment: 20 },
-    { performanceTask: 40, writtenWork: 40, quarterlyAssessment: 20 },
-  ])
+  // const [percentages] = useState([
+  //   { performanceTask: 40, writtenWork: 40, quarterlyAssessment: 20 },
+  //   { performanceTask: 40, writtenWork: 40, quarterlyAssessment: 20 },
+  //   { performanceTask: 40, writtenWork: 40, quarterlyAssessment: 20 },
+  //   { performanceTask: 40, writtenWork: 40, quarterlyAssessment: 20 },
+  // ])
   const [gradePercentages, setGradePercentages] = useState<GradePercentage[]>(gradePercentage)
 
   const [selectedPercentageId, setSelectedPercentageId] = useState(gradePercentages[0].id  )
@@ -145,20 +145,20 @@ export function ClassStudents({subject,gradePercentage}:ClassStudentsProps,
   //   setIsPercentageDialogOpen(false)
   // }
 
-  const calculateGradingPeriodAverage = (studentId: string, period: number) => {
-    const student = students.find(s => s.id === studentId)
-    if (!student) return 0
+  // const calculateGradingPeriodAverage = (studentId: string, period: number) => {
+  //   const student = students.find(s => s.id === studentId)
+  //   if (!student) return 0
 
-    const ptScore = student.grades.map(e =>e.performanceTask)[0]
-    const wwScore = student.grades.map(e=>e.writtenWork)[0]
-    const qaScore = student.grades.map(e=>e.quarterlyAssess)[0]
+  //   const ptScore = student.grades.map(e =>e.performanceTask)[0]
+  //   const wwScore = student.grades.map(e=>e.writtenWork)[0]
+  //   const qaScore = student.grades.map(e=>e.quarterlyAssess)[0]
 
-    return (
-      (ptScore * percentages[period].performanceTask / 100) +
-      (wwScore * percentages[period].writtenWork / 100) +
-      (qaScore * percentages[period].quarterlyAssessment / 100)
-    )
-  }
+  //   return (
+  //     (ptScore * percentages[period].performanceTask / 100) +
+  //     (wwScore * percentages[period].writtenWork / 100) +
+  //     (qaScore * percentages[period].quarterlyAssessment / 100)
+  //   )
+  // }
 
   const filteredStudents = students.filter(student =>
     student.name.toLowerCase().includes(searchTerm.toLowerCase())

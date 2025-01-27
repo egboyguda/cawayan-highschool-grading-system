@@ -1,19 +1,8 @@
-import { Users, BookOpen, GraduationCap } from 'lucide-react'
+import { Users, GraduationCap } from 'lucide-react'
 import StatCard from '@/components/statCart'
-import StudentEnrollmentChart from '@/components/dashboard/chart'
-import QuickLinks from '@/components/dashboard/link'
 import { getStudentCount } from '@/db/query/getStudent'
 import { getTeacherCount } from '@/db/query/getTeacher'
 
-const stats = [
-        
-  { 
-    title: "Total Classes", 
-    value: 56, 
-    icon: BookOpen
-  },
- 
-]
 
 export default async function Dashboard() {
   const studentCount =await getStudentCount()

@@ -1,10 +1,10 @@
 "use client"
 
-import { useActionState, useState } from "react"
+import { useActionState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+
 import {
   Dialog,
   DialogContent,
@@ -16,12 +16,7 @@ import {
 import { addStudentAction } from "@/action/addClass"
 
 
-interface Student {
-  id: number
-  name: string
-  gradeYear: "7" | "8" | "9" | "10"
-  section: string
-}
+
 
 interface AddStudentFormProps {
   //onAddStudent: (student: Omit<Student, "id">) => void
@@ -40,7 +35,7 @@ export function AddStudentForm({classId}: AddStudentFormProps) {
       <DialogContent className="sm:max-w-[425px] bg-white">
         <DialogHeader>
           <DialogTitle>Add New Student</DialogTitle>
-          <DialogDescription>Enter the details of the new student here. Click save when you're done.</DialogDescription>
+          <DialogDescription>Enter the details of the new student here. Click save when you&apos;re done.</DialogDescription>
         </DialogHeader>
         <form action={action} className="space-y-4">
           <div className="space-y-2">

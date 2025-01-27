@@ -1,6 +1,6 @@
 import { db } from "@/db";
 import { verifySession } from "@/lib/dal";
-import { revalidatePath } from "next/cache";
+
 
 
 interface Subject{

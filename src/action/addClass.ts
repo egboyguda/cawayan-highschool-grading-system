@@ -20,33 +20,36 @@ interface classState{
         _form?:string[]
     }
 }
-export async function addClassAction(formState:classState,formData:FormData):Promise<classState>{
-    const result = classSchema.safeParse({ 
+export async function addClassAction(formState: classState, formData: FormData): Promise<classState> {
+    const result = classSchema.safeParse({
         section: formData.get('section'),
         adviser: formData.get('adviser'),
         schoolYear: formData.get('schoolYear'),
         gradeYear: formData.get('gradeYear'),
-    })
+    });
 
-    if(!result.success){
-        return{
+    if (!result.success) {
+        return {
             errors: result.error.flatten().fieldErrors,
-        }
+        };
     }
+
     const teacher = await db.teacher.findUnique({
         where: {
             teacherId: result.data.adviser,
         },
-    })
-    if(!teacher){
-        return{
+    });
+
+    if (!teacher) {
+        return {
             errors: {
                 adviser: ['Teacher not found'],
-            }
-        }
+            },
+        };
     }
+
     const year = new Date().getFullYear().toString();
-    const classCount = await db.classroom.count({
+    let classCount = await db.classroom.count({
         where: {
             classId: {
                 startsWith: year,
@@ -54,32 +57,43 @@ export async function addClassAction(formState:classState,formData:FormData):Pro
         },
     });
 
-    const uniqueSuffix = (classCount + 2).toString().padStart(4, '0'); // Ensure 4-digit suffix
-    const classId = `C${year}${uniqueSuffix}`;
-    try{
+    let uniqueSuffix = (classCount + 2).toString().padStart(4, '0'); // Ensure 4-digit suffix
+    let classId = `C${year}${uniqueSuffix}`;
+
+    // Check if classId already exists and regenerate if necessary
+    while (await db.classroom.findUnique({ where: { classId } })) {
+        classCount++; // Increment the class count
+        uniqueSuffix = (classCount + 2).toString().padStart(4, '0');
+        classId = `C${year}${uniqueSuffix}`; // Regenerate classId
+    }
+
+    try {
         await db.classroom.create({
             data: {
                 section: result.data.section,
                 adviserId: teacher.id,
                 year_level: result.data.gradeYear,
-                school_year:result.data.schoolYear    ,
-                classId: classId,           
-          
+                school_year: result.data.schoolYear,
+                classId: classId, // The newly generated unique class ID
             },
-        })
-    }catch(error){
-        if(error instanceof Error){
-            return{
+        });
+
+        revalidatePath('/classes');
+    } catch (error) {
+        if (error instanceof Error) {
+            return {
                 errors: {
                     _form: [error.message],
-                }
-            }
+                },
+            };
         }
     }
+
     return {
         errors: {},
-    }
+    };
 }
+
 
 const studentIdSch = z.object({
     studentId: z.string().min(3),

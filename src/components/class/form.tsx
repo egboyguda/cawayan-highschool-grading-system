@@ -16,9 +16,9 @@ interface ClassFormData {
   gradeYear: "7" | "8" | "9" | "10"
 }
 
-interface AddClassFormProps {
-  onSubmit: (data: ClassFormData) => void
-}
+// interface AddClassFormProps {
+//   onSubmit: (data: ClassFormData) => void
+// }
 
 const AddClassForm = () => {
   const [newClass, setNewClass] = useState<ClassFormData>({
