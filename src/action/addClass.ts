@@ -91,45 +91,54 @@ interface studentIdState{
         _form?:string[]
     }
 }
-export async function addStudentAction(classId:string,formState:studentIdState,formData:FormData):Promise<studentIdState>{
+export async function addStudentAction(classId: string, formState: studentIdState, formData: FormData): Promise<studentIdState> {
     const result = studentIdSch.safeParse({ 
-        studentId: formData.get('studentId'),
-    })
-
-    if(!result.success){
-        return{
-            errors: result.error.flatten().fieldErrors,
-        }
-    }
- 
+      studentId: formData.get('studentId'),
+    });
   
-    try{
+    if (!result.success) {
+      return {
+        errors: result.error.flatten().fieldErrors,
+      };
+    }
+  
+    try {
+      // Assuming the studentId exists and the classroomId is set in the Student model
+      const student = await db.student.findUnique({
+        where: { studentId: result.data.studentId }, // Find student by unique studentId
+      });
+  
+      if (!student) {
+        throw new Error('Student not found');
+      }
+  
+      // Update the classroom with the new student
       await db.classroom.update({
-            where:{
-                id:classId
+        where: {
+          id: classId,
+        },
+        data: {
+          students: {
+            connect: {
+              studentId: result.data.studentId, // Use studentId to connect, but it must be unique
             },
-            data:{
-                students:{
-                    connect:{
-                        studentId:result.data.studentId
-                    }
-                }
-            }
-        })
-       
-        revalidatePath( `/class/${classId}/students`)
-    }catch(error){
-        if(error instanceof Error){
-            return{
-                errors: {
-                    _form: [error.message],
-                }
-            }
-        }
+          },
+        },
+      });
+  
+      revalidatePath(`/class/${classId}/students`);
+    } catch (error) {
+      if (error instanceof Error) {
+        return {
+          errors: {
+            _form: [error.message],
+          },
+        };
+      }
     }
+  
     return {
-        errors: {},
-    }
-
-
-}
+      errors: {},
+    };
+  }
+  

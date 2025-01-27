@@ -51,11 +51,13 @@ export function ClassStudents({ classes }: ClassStudentsProps) {
   const handleCloseModal = () => {
     setSelectedStudent(null);
   };
-
+  
+  
   return (
     <div className="space-y-6">
       <h1 className="text-3xl font-bold text-blue-900">
         Class Students - Section {classes.section.toUpperCase()}
+        
       </h1>
       <p className="text-lg text-gray-600">Adviser: {classes.adviser?.toUpperCase() || "N/A"}</p>
       <div className="flex items-center space-x-2">
@@ -66,7 +68,7 @@ export function ClassStudents({ classes }: ClassStudentsProps) {
           className="max-w-sm"
         />
       </div>
-      <AddStudentForm classId={classes.classId} />
+      <AddStudentForm classId={classes.id} />
       <Card className="bg-white">
         <CardHeader>
           <CardTitle className="text-blue-900">Student List</CardTitle>

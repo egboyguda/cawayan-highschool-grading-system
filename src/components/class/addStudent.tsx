@@ -57,7 +57,7 @@ export function AddStudentForm({classId}: AddStudentFormProps) {
           <Button
             type="submit"
           >
-            Save
+        {isPending?'SAVING...':'SAVE'}
           </Button>
         </form>
       </DialogContent>
