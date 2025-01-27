@@ -20,6 +20,8 @@ model User {
 model Classroom {
   id         String    @id @default(uuid()) // UUID
   section    String
+  classId    String @unique
+  school_year String
   year_level String
   adviserId  String    @unique // One-to-one relationship
   adviser    Teacher   @relation("Adviser", fields: [adviserId], references: [id])

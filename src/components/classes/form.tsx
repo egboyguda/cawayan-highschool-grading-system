@@ -72,4 +72,3 @@ const AddClassForm= () => {
 }
 
 export default AddClassForm
-

@@ -241,7 +241,7 @@ export function ClassStudents({subject,gradePercentage}:ClassStudentsProps,
             perCent={gradePercentages.find(percentage => percentage.id === selectedPercentageId)!}
             students={filteredStudents}
             selectedGradingPeriod={selectedGradingPeriod}
-           
+      
             onAddGrade={handleAddGrade}
           />
         </CardContent>

@@ -1,7 +1,8 @@
-import Link from 'next/link'
+
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { deleteStudentAction } from "@/action/delAndEditAction"
 
 interface Student {
   id: string
@@ -34,9 +35,11 @@ const StudentList = ({ students }: StudentListProps) => {
                 <TableCell className="font-medium">{student.studentId}</TableCell>
                 <TableCell>{student.name}</TableCell>
                 <TableCell>
-                  <Link href={`/students/${student.id}/grading`}>
-                    <Button variant="outline" size="sm">View Grades</Button>
-                  </Link>
+                 
+                    <Button variant="destructive" className='bg-red-500 text-white'  onClick={()=>{
+                      deleteStudentAction(student.studentId)
+                    }} size="sm">Delete</Button>
+          
                 </TableCell>
               </TableRow>
             ))}

@@ -60,7 +60,7 @@ export async function addTeacherAction(formState: TeacherState, formData: FormDa
         },
       });
     
-      const uniqueSuffix = (teacherCount + 1).toString().padStart(4, '0'); // Ensure 4-digit suffix
+      const uniqueSuffix = (teacherCount + 2).toString().padStart(4, '0'); // Ensure 4-digit suffix
       const teacherId = `T${year}${uniqueSuffix}`;
      const teacher=   await db.teacher.create({
             data: {

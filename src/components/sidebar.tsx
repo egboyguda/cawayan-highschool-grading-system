@@ -7,6 +7,7 @@ const sidebarItems = [
   { href: "/", icon: Home, label: "Dashboard" },
   { href: "/students", icon: Users, label: "Students" },
   { href: "/teachers", icon: Users, label: "Teachers" },
+  { href: "/class", icon: BookOpen, label: "Class" },
   { href: "/subject", icon: BookOpen, label: "Subject" },
   { href: "/grades", icon: GraduationCap, label: "Grades" },
   { href: "/schedule", icon: Calendar, label: "Schedule" },
