@@ -3,13 +3,20 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { deleteStudentAction } from "@/action/delAndEditAction"
+import EditForm from "./edit"
 
 interface Student {
   id: string
-  name: string
   studentId: string
-}
+  name: string
+  firstName: string
+  middleName: string | null
+  lastName: string
+  gender: string | null
+  birthdata: Date | null
+  year_level: string | null
 
+}
 interface StudentListProps {
   students: Student[]
 }
@@ -35,11 +42,11 @@ const StudentList = ({ students }: StudentListProps) => {
                 <TableCell className="font-medium">{student.studentId}</TableCell>
                 <TableCell>{student.name}</TableCell>
                 <TableCell>
-                 
+       
                     <Button variant="destructive" className='bg-red-500 text-white'  onClick={()=>{
                       deleteStudentAction(student.studentId)
                     }} size="sm">Delete</Button>
-          
+                    <EditForm student={student}/>
                 </TableCell>
               </TableRow>
             ))}

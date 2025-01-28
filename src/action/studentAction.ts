@@ -2,6 +2,7 @@
 
 import { db } from '@/db';
 import { revalidatePath } from 'next/cache';
+import { redirect } from 'next/navigation';
 import {z} from 'zod';
 
 
@@ -30,8 +31,8 @@ interface StudentState {
 
 
 
-export async function addStudentAction(formState: StudentState, formData: FormData): Promise<StudentState> {
-    const result = studentSchema.safeParse({
+export async function addStudentAction(studentId: string | null, formState: StudentState, formData: FormData): Promise<StudentState> {
+    const result = studentSchema.safeParse({ 
         first_name: formData.get('first_name'),
         last_name: formData.get('last_name'),
         middle_name: formData.get('middle_name'),
@@ -45,7 +46,35 @@ export async function addStudentAction(formState: StudentState, formData: FormDa
             errors: result.error.flatten().fieldErrors,
         };
     }
-
+    if (studentId) {
+        console.log(studentId)
+        try {
+            await db.student.update({
+                where: { id: studentId },
+                data: {
+                    firstName: result.data.first_name,
+                    lastName: result.data.last_name,
+                    middleName: result.data.middle_name || null,
+                    gender: result.data.gender,
+                    birthdata: result.data.birthdate,
+                },
+            });
+            revalidatePath('/students');
+            redirect('/students');
+        } catch (error) {
+            if (error instanceof Error) {
+                return {
+                    errors: {
+                        _form: [error.message],
+                    },
+                }
+                
+            }
+        }
+        return {
+            errors: {},
+        };
+    }
     try {
         const year = new Date().getFullYear().toString(); // Get the current year as a string
 
@@ -87,6 +116,7 @@ export async function addStudentAction(formState: StudentState, formData: FormDa
 
         revalidatePath('/students');
         revalidatePath('/');
+        redirect('/students');
 
     } catch (error) {
         if (error instanceof Error) {
@@ -108,3 +138,4 @@ export async function addStudentAction(formState: StudentState, formData: FormDa
         errors: {},
     };
 }
+

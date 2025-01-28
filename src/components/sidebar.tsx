@@ -23,6 +23,8 @@ const AppSidebar = () => {
           src="/Picture1.png"
           alt="School Logo"
           className="w-20 h-20 rounded-full flex-shrink-0"
+          width={100}
+          height={100}
         />
         <h1 className="text-xl font-bold text-white overflow-hidden transition-all duration-300 ease-in-out">
           School Manager

@@ -12,6 +12,12 @@ interface Student {
   id: string
   studentId: string
   name: string
+  firstName: string
+  middleName: string | null
+  lastName: string
+  gender: string | null
+  birthdata: Date | null
+  year_level: string | null
 
 }
 interface StudentListProps {
