@@ -13,10 +13,13 @@ interface StudentGradeSummaryProps {
   lrn: string
   name: string
   year_level:string
+  gender:string 
+  age:string
+  section:string
   gradesData: Record<string, Record<string, number[]>>
 }
 
-export default function StudentGradeSummary({ name, gradesData,lrn,year_level }: StudentGradeSummaryProps) {
+export default function StudentGradeSummary({ name, gradesData,lrn,year_level ,gender,age,section}: StudentGradeSummaryProps) {
   const searchParams = useSearchParams()
   const schoolYear = searchParams.get('schoolYear')
   const [grades, setGrades] = useState<Record<string, number[]>>({})
@@ -457,12 +460,12 @@ doc.text("LEARNER'S PROGRESS REPORT CARD",secondColumnX+columnWidth/4,schoolLear
  doc.text(`Learner's Refereance Number: ${lrn}`,secondColumnX-40,studentIdY)
 
  const ageY = studentIdY+8
- doc.text(`Age: 24`,secondColumnX-40,ageY)
- doc.text(`Sex: Male`,secondColumnX+15,ageY)
+ doc.text(`Age: ${age}`,secondColumnX-40,ageY)
+ doc.text(`Sex: ${gender}`,secondColumnX+15,ageY)
 
 const gradey = ageY+8
 doc.text(`Grade: ${year_level}`,secondColumnX-40,gradey)
-doc.text(`Section: `,secondColumnX+15,gradey)
+doc.text(`Section: ${section} `,secondColumnX+15,gradey)
 
 const nameSchoolY = gradey+8
 doc.text(`School Year: ${parseInt(schoolYear)-1}-${schoolYear} `,secondColumnX-40,nameSchoolY)
