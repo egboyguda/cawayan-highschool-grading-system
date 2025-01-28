@@ -14,22 +14,37 @@ import { addStudentAction } from "@/action/studentAction"
 import { useActionState } from "react"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select"
 
+interface Student{
+  id: string
+  studentId: string
+  name: string
+  firstName: string
+  middleName: string | null
+  lastName: string
+  gender: string | null
+  birthdata: Date | null
+  year_level: string | null
+
+}
+interface EditFormProps {
+  student:Student
+
+}
 
 
-
-const AddStudentForm = () => {
-   const [formState,action,isPending] = useActionState(addStudentAction.bind(null,null),{errors:{}})
+const EditForm = ({student}:EditFormProps) => {
+   const [formState,action,isPending] = useActionState(addStudentAction.bind(null, student.id),{errors:{}})
 
   return (
     <Dialog >
       <DialogTrigger asChild>
-        <Button variant="default">Add Student</Button>
+        <Button variant="default" className="border border-black">Edit</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px] bg-white">
         <DialogHeader>
-          <DialogTitle>Add New Student</DialogTitle>
+          <DialogTitle>Edit Student</DialogTitle>
           <DialogDescription>
-            Enter the details of the new student here. Click save when you&apos;re done.
+            Enter the details of the student here. Click save when you&apos;re done.
           </DialogDescription>
         </DialogHeader>
         <form action={action} >
@@ -38,6 +53,7 @@ const AddStudentForm = () => {
             <Input
               id="first_name"
                name='first_name' 
+               defaultValue={student.firstName}
               required
             />
             {formState.errors.first_name && (
@@ -49,6 +65,7 @@ const AddStudentForm = () => {
           <div className="space-y-2">
             <Label htmlFor="middle_name">Middle Name</Label>
             <Input
+            defaultValue={student.middleName || ''}
               id="middle_name"
             name='middle_name'
             />
@@ -64,6 +81,7 @@ const AddStudentForm = () => {
             <Label htmlFor="last_name">Last Name</Label>
             <Input
               id="last_name"
+              defaultValue={student.lastName}
               name='last_name'
                 required
             />
@@ -77,7 +95,7 @@ const AddStudentForm = () => {
           </div>
           <div className="space-y-2">
             <Label htmlFor="gender">Gender</Label>
-            <Select  name='gender' required>
+            <Select  name='gender' required defaultValue={student.gender || ''}>
               <SelectTrigger>
                 <SelectValue placeholder="Select gender" />
               </SelectTrigger>
@@ -101,6 +119,7 @@ const AddStudentForm = () => {
               type="date"
               name='birthdate'
               required
+              defaultValue={student.birthdata?.toISOString().split('T')[0] || ''}
             />
             {
               formState.errors.birthdate && (
@@ -117,5 +136,5 @@ const AddStudentForm = () => {
   )
 }
 
-export default AddStudentForm
+export default EditForm
 

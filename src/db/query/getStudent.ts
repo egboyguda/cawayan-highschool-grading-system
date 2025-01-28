@@ -13,12 +13,22 @@ if (!session) return null;
               studentId: true,
               firstName: true,
               lastName: true,
+              birthdata: true,
+              gender: true,
+              year_level: true,
+              middleName:true
             },
           });
       
           // Format the result to include full name
           const formattedStudents = students.map(student => ({
             id: student.id,
+            year_level: student.year_level,
+            firstName: student.firstName,
+            lastName: student.lastName,
+            birthdata: student.birthdata,
+            gender: student.gender,
+            middleName: student.middleName || '',
             studentId: student.studentId,
             name: `${student.firstName} ${student.lastName}`,
           }));
