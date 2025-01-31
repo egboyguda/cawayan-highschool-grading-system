@@ -28,20 +28,7 @@ model Classroom {
   students   Student[] // One-to-many relationship with Student
 }
 
-model Student {
-  id          String      @id @default(uuid()) // UUID for Student ID
-  firstName   String
-  middleName  String?
-  lastName    String
-  studentId   String      @unique
-  classroomId String?     // Foreign key to Classroom
-  classroom   Classroom?  @relation(fields: [classroomId], references: [id])
-  subjects    Subject[]   @relation("StudentSubjects")
-  grades      Grade[]     // One-to-many relationship with Grade
-  year_level  String      @default("7")
-  gender      String?
-  birthdata   DateTime?
-}
+
 
 model Teacher {
   id         String      @id @default(uuid()) // UUID
@@ -67,21 +54,7 @@ model Subject {
   school_year String
 }
 
-model Grade {
-  id               String  @id @default(uuid()) // UUID
-  studentId        String  // Foreign key to Student (should match Student's `id` type)
-  subjectId        String  // Foreign key to Subject
-  gradingPeriod    Int     // 1 = 1st Grading, 2 = 2nd Grading, etc.
-  writtenWork      Float?   // Grade for Written Work (e.g., 30%)
-  performanceTask  Float?   // Grade for Performance Task (e.g., 50%)
-  quarterlyAssessment  Float?   // Grade for Quarterly Assessment (e.g., 20%)
-   // Sum of the three components (must equal 100%)
 
-  student          Student @relation(fields: [studentId], references: [id])
-  subject          Subject @relation(fields: [subjectId], references: [id])
-
-  @@unique([studentId, subjectId, gradingPeriod]) // Ensures no duplicate grades per period
-}
 model GradePercent {
   id                 String  @id @default(uuid())
   writtenWork        Float   // Percentage for Written Work
@@ -91,5 +64,35 @@ model GradePercent {
   @@unique([writtenWork, performanceTask, quarterlyAssessment]) 
 }
 
+
+model Grade {
+  id                  String  @id @default(uuid())
+  studentId           String
+  subjectId           String
+  gradingPeriod       Int
+  writtenWork         Float?
+  performanceTask     Float?
+  quarterlyAssessment Float?
+
+  student             Student @relation(fields: [studentId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  subject             Subject @relation(fields: [subjectId], references: [id])
+
+  @@unique([studentId, subjectId, gradingPeriod])
+}
+
+model Student {
+  id          String    @id @default(uuid())
+  firstName   String
+  middleName  String?
+  lastName    String
+  studentId   String    @unique
+  classroomId String?
+  classroom   Classroom? @relation(fields: [classroomId], references: [id])
+  subjects    Subject[] @relation("StudentSubjects")
+  grades      Grade[]   // One-to-many relationship with Grade
+  year_level  String    @default("7")
+  gender      String?
+  birthdata   DateTime?
+}
 
 
