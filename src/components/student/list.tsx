@@ -43,8 +43,9 @@ const StudentList = ({ students }: StudentListProps) => {
                 <TableCell>{student.name}</TableCell>
                 <TableCell>
        
-                    <Button variant="destructive" className='bg-red-500 text-white'  onClick={()=>{
-                      deleteStudentAction(student.studentId)
+                    <Button variant="destructive" className='bg-red-500 text-white'  onClick={async()=>{
+                      await deleteStudentAction(student.studentId)
+                      window.location.reload()
                     }} size="sm">Delete</Button>
                     <EditForm student={student}/>
                 </TableCell>

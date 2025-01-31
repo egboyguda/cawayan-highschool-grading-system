@@ -1,10 +1,10 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import Link from 'next/link'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { deleteTeacherAction } from '@/action/delAndEditAction'
 
 interface Teacher {
   id: string
@@ -58,14 +58,11 @@ const TeacherList = ({ initialTeachers, searchTerm }: TeacherListProps) => {
                 <TableCell>{teacher.major}</TableCell>
                 <TableCell>{teacher.teacherId}</TableCell>
                 <TableCell>
-                  <div className="flex space-x-2">
-                    <Link href={`/teachers/${teacher.id}/schedule`}>
-                      <Button variant="outline" size="sm">View Schedule</Button>
-                    </Link>
-                    <Link href={`/teachers/${teacher.id}/edit`}>
-                      <Button variant="outline" size="sm">Edit</Button>
-                    </Link>
-                  </div>
+                  <Button variant="destructive" className='bg-red-500 text-white' size="sm" onClick={async()=>{
+                    await deleteTeacherAction(teacher.teacherId);
+                    window.location.reload();
+
+                  }}>Delete</Button>
                 </TableCell>
               </TableRow>
             ))}

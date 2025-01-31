@@ -116,7 +116,7 @@ export async function addStudentAction(studentId: string | null, formState: Stud
 
         revalidatePath('/students');
         revalidatePath('/');
-        redirect('/students');
+        
 
     } catch (error) {
         if (error instanceof Error) {
@@ -133,7 +133,7 @@ export async function addStudentAction(studentId: string | null, formState: Stud
             },
         };
     }
-
+    redirect('/students');
     return {
         errors: {},
     };

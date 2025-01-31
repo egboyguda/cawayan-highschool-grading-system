@@ -49,7 +49,7 @@ export const getAllSubjects = async (): Promise<Subject[] | null> => {
                     },
                 },
                 year_level: true,
-                subjectId: true,
+                subjectId: true ,
                 school_year: true,
             },
         });
@@ -57,9 +57,9 @@ export const getAllSubjects = async (): Promise<Subject[] | null> => {
         return subjects.map((subject) => ({
             id: subject.id,
             name: subject.name,
-            teacherName: subject.teacher.name,
+            teacherName: subject?.teacher?.name || 'no teacher',
             year_level: subject.year_level,
-            subjectId: subject.subjectId,
+            subjectId: subject?.subjectId || '',
             school_year: subject.school_year,
         }));
     } catch (error) {
@@ -121,9 +121,9 @@ export const getSubject = async (id: string): Promise<SubjectWithStudent | null>
         return {
             id: subject.id,
             name: subject.name,
-            teacherName: subject.teacher.name,
+            teacherName: subject?.teacher?.name || '',
             year_level: subject.year_level,
-            subjectId: subject.subjectId,
+            subjectId: subject.subjectId || '',
             school_year: subject.school_year,
             students: subject.students.map((student) => ({
                 id: student.id,

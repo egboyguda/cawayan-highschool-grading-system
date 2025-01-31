@@ -2,6 +2,7 @@
 
 import { db } from '@/db';
 import { revalidatePath } from 'next/cache';
+import { redirect } from 'next/navigation';
 import { z } from 'zod';
 
 const subjectSchema = z.object({
@@ -131,7 +132,7 @@ export async function addStudent(
                 }
             }
         })
-        revalidatePath('/subject/[id]/student')
+        revalidatePath(`/subject/${subjectId}/student`)
        
     } catch (error) {
       if(error instanceof Error){
@@ -147,6 +148,7 @@ export async function addStudent(
             },
         };
     }
+    redirect(`/subject/${subjectId}/student`)
     return {
         errors:{}
     }

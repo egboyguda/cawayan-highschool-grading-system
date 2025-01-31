@@ -1,6 +1,7 @@
 'use server';
 import { db } from '@/db';
 import { revalidatePath } from 'next/cache';
+import { redirect } from 'next/navigation';
 import {z} from 'zod';
 
 const teacherSchema = z.object(
@@ -106,6 +107,6 @@ export async function addTeacherAction(formState: TeacherState, formData: FormDa
             };
         }
     }
-
+    redirect('/teachers');
     return { errors: {} };
 }
