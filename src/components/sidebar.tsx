@@ -1,4 +1,4 @@
-import { Home, Users, BookOpen, Calendar, Settings, GraduationCap } from "lucide-react"
+import { Home, Users, BookOpen, GraduationCap } from "lucide-react"
 import { Sidebar, SidebarContent, SidebarHeader, SidebarMenu, SidebarRail } from "@/components/ui/sidebar"
 import SidebarItem from "./sidebarItem"
 
@@ -10,8 +10,7 @@ const sidebarItems = [
   { href: "/class", icon: BookOpen, label: "Class" },
   { href: "/subject", icon: BookOpen, label: "Subject" },
   { href: "/grades", icon: GraduationCap, label: "Grades" },
-  { href: "/schedule", icon: Calendar, label: "Schedule" },
-  { href: "/settings", icon: Settings, label: "Settings" },
+ 
 ]
 
 const AppSidebar = () => {
