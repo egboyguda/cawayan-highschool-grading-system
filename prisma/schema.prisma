@@ -23,8 +23,8 @@ model Classroom {
   classId    String @unique
   school_year String
   year_level String
-  adviserId  String    @unique // One-to-one relationship
-  adviser    Teacher   @relation("Adviser", fields: [adviserId], references: [id])
+  adviserId  String?    @unique // One-to-one relationship
+  adviser    Teacher?   @relation("Adviser", fields: [adviserId], references: [id])
   students   Student[] // One-to-many relationship with Student
 }
 
@@ -59,8 +59,8 @@ model Subject {
   id          String     @id @default(uuid()) // UUID
   name        String
   subjectId   String
-  teacherId   String     // Foreign key to Teacher
-  teacher     Teacher    @relation("TeacherSubjects", fields: [teacherId], references: [id])
+  teacherId   String?     // Foreign key to Teacher
+  teacher     Teacher?    @relation("TeacherSubjects", fields: [teacherId], references: [id])
   students    Student[]  @relation("StudentSubjects")
   grades      Grade[]    // One-to-many relationship with Grade
   year_level  String

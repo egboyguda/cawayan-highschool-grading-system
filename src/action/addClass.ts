@@ -1,6 +1,7 @@
 'use server'
 import { db } from "@/db";
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 import { z } from "zod";
 
 const classSchema = z.object(
@@ -88,7 +89,7 @@ export async function addClassAction(formState: classState, formData: FormData):
             };
         }
     }
-
+redirect('/classes')
     return {
         errors: {},
     };
