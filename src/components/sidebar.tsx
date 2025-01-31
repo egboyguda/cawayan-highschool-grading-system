@@ -1,4 +1,4 @@
-import { Home, Users, BookOpen, Calendar, Settings, GraduationCap } from "lucide-react"
+import { Home, Users, BookOpen, GraduationCap } from "lucide-react"
 import { Sidebar, SidebarContent, SidebarHeader, SidebarMenu, SidebarRail } from "@/components/ui/sidebar"
 import SidebarItem from "./sidebarItem"
 
